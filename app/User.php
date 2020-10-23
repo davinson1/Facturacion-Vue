@@ -16,8 +16,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+      'id_tipo_documento',
+      'id_municipio',
+      'name',
+      'apellido',
+      'numero_documento',
+      'direccion',
+      'email',
+      'foto',
+      'copia_documento',
+      'password',
+      'activo',
+      'remember_token',
     ];
+
+    public function tipoDocumento() {
+      return $this->belongsTo(Models\TipoDocumento::class, 'id_tipo_documento');
+    }
+    public function municipio() {
+      return $this->belongsTo(Models\Municipios::class, 'id_municipio');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
