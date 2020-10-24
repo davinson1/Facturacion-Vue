@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="#">
     <title>@yield("titulo","Bienvenido ".Auth::user()->name)</title>
     <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}">
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar -->
@@ -23,13 +23,14 @@
       @yield('content')
     </main>
     <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.5.1.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{asset('js/jquery-3.5.1.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
+    <script src="{{asset('js/plugins/pace.min.js')}}"></script>
     <!-- Page specific javascripts-->
-    <script src="js/fontawesome.js"></script>
+    <script src="{{asset('js/fontawesome.js')}}"></script>
+    <script src="{{asset('js/app.js')}}"></script>
   </body>
 </html>
