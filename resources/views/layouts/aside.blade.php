@@ -12,7 +12,9 @@
           <li><a class="treeview-item" href="#"><i class="icon fa  fa-user-friends nav-icon"></i> Usuarios</a></li>
           <li><a class="treeview-item" href="#" target="_blank" rel="noopener"><i class="icon fa fa-user-tag"></i> Roles</a></li>
           <li><a class="treeview-item" href="#"><i class="icon fa fa-id-card"></i> Tipo de documento</a></li>
+          @can('unpublish articles')
           <li><a class="treeview-item" href="#"><i class="icon fa fa-building"></i> Empresa</a></li>
+          @endcan
         </ul>
       </li>
     </ul>
