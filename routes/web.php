@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Ubicacion\PaisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,6 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function () {
-
+Route::middleware(['auth'])->group(function(){
+	Route::get('/pais', [PaisController::class, 'index']);
 });
