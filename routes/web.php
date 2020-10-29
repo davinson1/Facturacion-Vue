@@ -23,4 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function(){
 	Route::get('/pais', [PaisController::class, 'index']);
+	Route::get('/listar_paises', [PaisController::class, 'listar']);
+	Route::post('/pais_crear', [PaisController::class, 'create']);
 });

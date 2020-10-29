@@ -13,13 +13,13 @@ class PaisController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index(Request $request)
+  public function index()
+  {     
+    return view('ubicacion.pais');
+  }
+  public function listar()
   {
-    if($request->ajax()){
-      return Paises::all();
-    }else{      
-      return view('ubicacion.pais');
-    }
+    return Paises::all();    
   }
 
   /**
@@ -27,9 +27,15 @@ class PaisController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function create()
+  public function create(Request $request)
   {
-      //
+    if($request->ajax())
+    {
+      $pais = new Paises();
+      $pais->nombre = $request->nombre;
+      $pais->save();
+      return Paises::all();
+    }
   }
 
   /**
