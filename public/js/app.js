@@ -2025,7 +2025,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     tabla: function tabla() {
-      $(document).ready(function () {
+      this.$nextTick(function () {
         $('#myTable').DataTable({
           "responsive": "true",
           "bDestroy": true,

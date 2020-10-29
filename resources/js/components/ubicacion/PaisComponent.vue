@@ -75,7 +75,7 @@
     },
     methods:{
       tabla(){
-        $(document).ready( function () {
+        this.$nextTick(() => {
           $('#myTable').DataTable({"responsive": "true",
             "bDestroy": true,
             "iDisplayLength": 10,
@@ -93,11 +93,11 @@
         const paisnuevo = this.paiscrear;
         this.paiscrear = {nombre: ''};
         axios.post('/pais_crear', paisnuevo).then((res) =>{
-            swal("Muy bien!", "País creado correctamente", "success");            
-            $('#exampleModal').modal('hide');
-            $('.modal-backdrop').hide();            
-            $('#myTable').DataTable().destroy();
-            this.paises = res.data;            
+            swal("Muy bien!", "País creado correctamente", "success")
+            $('#exampleModal').modal('hide')
+            $('.modal-backdrop').hide()
+            $('#myTable').DataTable().destroy()            
+            this.paises = res.data
             this.tabla()
           });
       },
