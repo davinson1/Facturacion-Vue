@@ -29,12 +29,20 @@ class PaisController extends Controller
    */
   public function create(Request $request)
   {
+
+    $data = request()->validate([
+      'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
+    ]);
+
     if($request->ajax())
     {
       $pais = new Paises();
       $pais->nombre = $request->nombre;
       $pais->save();
-      return Paises::all();
+      // return response()->json([
+      //   "mensaje" => "País editado correctamente."
+      //    ]);
+      return response()->json(Paises::all());
     }
   }
 
@@ -78,9 +86,12 @@ class PaisController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request)
   {
-      //
+    $pais = Paises::Find($request->id);
+    $pais->nombre = $request->nombre;
+    $pais->save();
+    return Paises::all();
   }
 
   /**
@@ -91,6 +102,9 @@ class PaisController extends Controller
    */
   public function destroy($id)
   {
-      //
-  }
+    $pais = Paises::find($id);
+    $pais->delete();
+    return Paises::all();
+
+    }
 }

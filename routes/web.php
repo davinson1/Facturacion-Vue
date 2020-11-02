@@ -25,4 +25,8 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('/pais', [PaisController::class, 'index']);
 	Route::get('/listar_paises', [PaisController::class, 'listar']);
 	Route::post('/pais_crear', [PaisController::class, 'create']);
+
+	Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
+	Route::put('/pais_editar', 'Ubicacion\PaisController@update');
+
 });

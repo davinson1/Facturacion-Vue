@@ -1943,10 +1943,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var datatables_net_dt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! datatables.net-dt */ "./node_modules/datatables.net-dt/js/dataTables.dataTables.js");
 /* harmony import */ var datatables_net_dt__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(datatables_net_dt__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var datatables_net_dt_js_dataTables_bootstrap4_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! datatables.net-dt/js/dataTables.bootstrap4.js */ "./node_modules/datatables.net-dt/js/dataTables.bootstrap4.js");
-/* harmony import */ var datatables_net_dt_js_dataTables_bootstrap4_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(datatables_net_dt_js_dataTables_bootstrap4_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var datatables_net_bs4__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! datatables.net-bs4 */ "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js");
+/* harmony import */ var datatables_net_bs4__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(datatables_net_bs4__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
 //
 //
 //
@@ -2019,11 +2022,48 @@ __webpack_require__.r(__webpack_exports__);
     return {
       paises: [],
       paiscrear: {
+        id: '',
         nombre: ''
-      }
+      },
+      titulomodal: '',
+      btneditar: false,
+      btncrear: false
     };
   },
   methods: {
+    editar: function editar(item) {
+      var _this = this;
+
+      axios.put('/pais_editar', {
+        'id': this.paiscrear.id,
+        'nombre': this.paiscrear.nombre
+      }).then(function (res) {
+        $('#myTable').DataTable().destroy();
+        _this.paises = res.data;
+
+        _this.tabla();
+
+        $('#exampleModal').modal('hide');
+        $('.modal-backdrop').hide();
+        console.log(res);
+        sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("Muy bien!", "País editado correctamente", "success");
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarpais: function editarpais(item) {
+      this.titulomodal = ' Editar País';
+      this.btneditar = true;
+      this.btncrear = false;
+      this.paiscrear.nombre = item.nombre;
+      this.paiscrear.id = item.id;
+    },
+    abirimodal: function abirimodal() {
+      this.titulomodal = ' Crear País';
+      this.btneditar = false;
+      this.btncrear = true;
+      this.paiscrear.nombre = '';
+    },
     tabla: function tabla() {
       this.$nextTick(function () {
         $('#myTable').DataTable({
@@ -2035,16 +2075,16 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getPais: function getPais() {
-      var _this = this;
+      var _this2 = this;
 
-      axios.get('listar_paises').then(function (res) {
-        _this.paises = res.data;
+      var listar = axios.get('/listar_paises').then(function (res) {
+        _this2.paises = res.data;
 
-        _this.tabla();
+        _this2.tabla();
       });
     },
     agregar: function agregar() {
-      var _this2 = this;
+      var _this3 = this;
 
       var paisnuevo = this.paiscrear;
       this.paiscrear = {
@@ -2055,9 +2095,39 @@ __webpack_require__.r(__webpack_exports__);
         $('#exampleModal').modal('hide');
         $('.modal-backdrop').hide();
         $('#myTable').DataTable().destroy();
-        _this2.paises = res.data;
+        _this3.paises = res.data;
 
-        _this2.tabla();
+        _this3.tabla();
+      })["catch"](function (error) {
+        console.log(error.response.data.errors.nombre);
+        sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("ooohhh Vaya!", "" + error.response.data.errors.nombre, "error");
+      });
+    },
+    eliminarpais: function eliminarpais(item) {
+      var _this4 = this;
+
+      sweetalert__WEBPACK_IMPORTED_MODULE_2___default()({
+        title: "esta seguro de eliminar a " + item.nombre,
+        text: "Si preciona OK se eliminara permanentemente",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(function (willDelete) {
+        if (willDelete) {
+          axios["delete"]('/paises_eliminar/' + item.id).then(function (res) {
+            $('#myTable').DataTable().destroy();
+            _this4.paises = res.data;
+
+            _this4.tabla();
+
+            sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("País " + item.nombre + " eliminado correctamente", {
+              icon: "success"
+            });
+          })["catch"](function (error) {
+            console.log(error);
+            sweetalert__WEBPACK_IMPORTED_MODULE_2___default()("ooohhh Vaya!", "no se pudo eliminar el pais, ya esta asociado a un departamento", "error");
+          });
+        }
       });
     }
   }
@@ -6493,10 +6563,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/datatables.net-dt/js/dataTables.bootstrap4.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/datatables.net-dt/js/dataTables.bootstrap4.js ***!
-  \********************************************************************/
+/***/ "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53300,9 +53370,24 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "col-md-12" }, [
       _c("div", { staticClass: "tile" }, [
-        _c("h3", { staticClass: "tile-title" }, [_vm._v("pais")]),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary float-right",
+            attrs: {
+              type: "button",
+              "data-toggle": "modal",
+              "data-target": "#exampleModal"
+            },
+            on: { click: _vm.abirimodal }
+          },
+          [
+            _c("i", { staticClass: "fas fa-plus-circle" }),
+            _vm._v(" Registrar País\n      ")
+          ]
+        ),
         _vm._v(" "),
-        _vm._m(0),
+        _c("h3", { staticClass: "tile-title" }, [_vm._v("pais")]),
         _vm._v(" "),
         _c(
           "div",
@@ -53322,58 +53407,124 @@ var render = function() {
               { staticClass: "modal-dialog", attrs: { role: "document" } },
               [
                 _c("div", { staticClass: "modal-content" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "modal-header" }, [
                     _c(
-                      "form",
+                      "h5",
                       {
-                        on: {
-                          submit: function($event) {
-                            $event.preventDefault()
-                            return _vm.agregar($event)
-                          }
-                        }
+                        staticClass: "modal-title",
+                        attrs: { id: "exampleModalLabel" }
                       },
                       [
-                        _c("div", { staticClass: "form-group" }, [
-                          _c("label", { staticClass: "control-label" }, [
-                            _vm._v("Nombre del país")
-                          ]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.paiscrear.nombre,
-                                expression: "paiscrear.nombre"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "Ecriba el nombre del país"
-                            },
-                            domProps: { value: _vm.paiscrear.nombre },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.paiscrear,
-                                  "nombre",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
+                        _c("i", { staticClass: "fas fa-plus-circle fa-lg" }),
+                        _vm._v(_vm._s(_vm.titulomodal) + " ")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("form", [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", { staticClass: "control-label" }, [
+                          _vm._v("Nombre del país")
                         ]),
                         _vm._v(" "),
-                        _vm._m(2)
-                      ]
-                    )
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.paiscrear.nombre,
+                              expression: "paiscrear.nombre"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Ecriba el nombre del país"
+                          },
+                          domProps: { value: _vm.paiscrear.nombre },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.paiscrear,
+                                "nombre",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.paiscrear.id,
+                              expression: "paiscrear.id"
+                            }
+                          ],
+                          attrs: { type: "hidden" },
+                          domProps: { value: _vm.paiscrear.id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.paiscrear, "id", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _vm.btncrear
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.agregar($event)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-save" }),
+                                _vm._v(" Crear")
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.btneditar
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.editar($event)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-save" }),
+                                _vm._v(" Editar")
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
                   ])
                 ])
               ]
@@ -53386,7 +53537,7 @@ var render = function() {
             "table",
             { staticClass: "table table-hover", attrs: { id: "myTable" } },
             [
-              _vm._m(3),
+              _vm._m(2),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -53398,7 +53549,39 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.updated_at))]),
                     _vm._v(" "),
-                    _vm._m(4, true)
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-sm",
+                          attrs: {
+                            "data-toggle": "modal",
+                            "data-target": "#exampleModal",
+                            type: "button"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.editarpais(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.eliminarpais(item)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -53418,67 +53601,28 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary float-right",
+        staticClass: "close",
         attrs: {
           type: "button",
-          "data-toggle": "modal",
-          "data-target": "#exampleModal"
+          "data-dismiss": "modal",
+          "aria-label": "Close"
         }
       },
-      [
-        _c("i", { staticClass: "fas fa-plus-circle" }),
-        _vm._v(" Registrar País\n      ")
-      ]
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [
-          _c("i", { staticClass: "fas fa-plus-circle fa-lg" }),
-          _vm._v(" Registrar País")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal", id: "cerrarmodal" }
-        },
-        [_c("i", { staticClass: "fas fa-times-circle" }), _vm._v(" Cerrar")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_c("i", { staticClass: "fas fa-save" }), _vm._v(" Crear")]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-secondary",
+        attrs: { type: "button", "data-dismiss": "modal", id: "cerrarmodal" }
+      },
+      [_c("i", { staticClass: "fas fa-times-circle" }), _vm._v(" Cerrar")]
+    )
   },
   function() {
     var _vm = this
@@ -53494,24 +53638,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary btn-sm", attrs: { type: "button" } },
-        [_c("i", { staticClass: "fas fa-edit" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-danger btn-sm", attrs: { type: "button" } },
-        [_c("i", { staticClass: "fas fa-trash" })]
-      )
     ])
   }
 ]
@@ -65989,8 +66115,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\FamiliaGuzman\Documents\facturacion-vue\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\FamiliaGuzman\Documents\facturacion-vue\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\facturacion-vue\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\facturacion-vue\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
