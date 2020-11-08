@@ -39,10 +39,6 @@ class PaisController extends Controller
       $pais = new Paises();
       $pais->nombre = $request->nombre;
       $pais->save();
-      // return response()->json([
-      //   "mensaje" => "País editado correctamente."
-      //    ]);
-      return response()->json(Paises::all());
     }
   }
 
@@ -91,7 +87,6 @@ class PaisController extends Controller
     $pais = Paises::Find($request->id);
     $pais->nombre = $request->nombre;
     $pais->save();
-    return Paises::all();
   }
 
   /**
@@ -104,7 +99,5 @@ class PaisController extends Controller
   {
     $pais = Paises::find($id);
     $pais->delete();
-    return Paises::all();
-
-    }
+  }
 }

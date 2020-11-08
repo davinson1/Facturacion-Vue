@@ -1,5 +1,10 @@
 @extends('layouts.app')
-
+@section('menu-open-ubicacion')
+is-expanded
+@endsection
+@section('active-pais')
+active
+@endsection
 @section('content')
 <div class="app-title">
   <div>
@@ -11,6 +16,6 @@
   </ul>
   </div>
   <div id="app" class="row">
-    <pais-component />    
+    <pais-component></pais-component>    
   </div>
 @endsection

@@ -23,10 +23,10 @@
       @yield('content')
     </main>
     <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.5.1.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{asset('js/jquery-3.5.1.js')}}"></script>
+    
+    <script src="{{asset('js/bootstrap.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     <!-- Page specific javascripts-->
     <script src="{{asset('js/fontawesome.js')}}"></script>
     <script src="{{asset('js/app.js')}}"></script>
