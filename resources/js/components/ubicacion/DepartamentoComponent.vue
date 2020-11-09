@@ -116,64 +116,6 @@
         this.sedit='1';
         this.selecteditar=false;
       },
-      tabla(){
-        this.$nextTick(() => {
-          $('#myTable').DataTable({
-              language: {
-              search: " Buscar ",
-              "lengthMenu":" Filtrar _MENU_ número de filas ",
-               "info": "Página _PAGE_ de _PAGES_",
-               "infoFiltered": "(Resultados encontrado de _MAX_ en total.)",
-               paginate: {
-                  first:      "Premier",
-                  previous:   "Anterior",
-                  next:       "Siguiente",
-                  last:       "Dernier"
-              }
-            },
-            dom: "<'row'<'col-sm-12 mb-3 text-center'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                  "<'row'<'col-sm-12'tr>>" +
-                  "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            buttons: [
-              {
-                "extend": "copyHtml5",
-                "text": "<i class='fas fa-copy'></i> Copiar",
-                "titleAttr": "Copiar filas",
-                "className": "btn btn-secondary"
-              },
-              {
-                "extend": "excelHtml5",
-                "text": "<i class='fas fa-file-excel'></i> Excel",
-                "titleAttr": "Exportar a Excel",
-                "className": "btn btn-success"
-              },
-              {
-                "extend": "pdfHtml5",
-                "text": "<i class='fas fa-file-pdf'></i> PDF",
-                "titleAttr": "Exportar a PDF",
-                "className": "btn btn-danger"
-              },
-              {
-                "extend": "csvHtml5",
-                "text": "<i class='fas fa-file-csv'></i> CSV",
-                "titleAttr": "Exportar a CSV",
-                "className": "btn btn-info"
-              },
-              {
-                "extend": "print",
-                "text": "<i class='fas fa-file-csv'></i> Imprimir",
-                "titleAttr": "Imprimir archivo",
-                "className": "btn btn-secondary"
-              }
-            ],
-            "responsive": "true",
-            "bDestroy": true,
-            "iDisplayLength": 10,
-            "order": [[0,"desc"]]
-          });
-        });
-      },
-
       getDepartamentos(){
        const listar = axios.get('/listar_departamentos').then(res=>{
           $('#myTable').DataTable().destroy()
