@@ -96,14 +96,15 @@
       return {
         departamentos: [],
         paises: [],
-        departamentocrear:{selected:'1',nombre:''},
+        departamentocrear:{nombre:''},
         titulomodal:'',
         btncrear:true,
         btnEditar:false,
         optionvalue:'',
         option:'',
         selecteditar:false,
-        sedit:''
+        sedit:'',
+
 
       }
     },
@@ -120,7 +121,7 @@
        const listar = axios.get('/listar_departamentos').then(res=>{
           $('#myTable').DataTable().destroy()
           this.departamentos = res.data;
-          this.tabla()
+          this.$tablaGlobal('#myTable')
         });
         axios.get('/select_pais').then(res=>{
         this.paises = res.data;
@@ -128,10 +129,10 @@
       },
 
       agregar(){
-        const deparnuevo = this.departamentocrear;
-        this.departamentocrear = {selected:'',nombre: ''};
-        console.log(deparnuevo)
-        axios.post('/departamento_crear', deparnuevo).then((res) =>{
+
+        axios.post('/departamento_crear',{
+          'id_pais':this.sedit,
+          'nombre':this.departamentocrear.nombre}).then((res) =>{
             this.getDepartamentos()
             $('#exampleModal').hide()
             $('#exampleModal').modal('hide')
