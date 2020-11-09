@@ -26,7 +26,7 @@
       <ul class="treeview-menu">
         <li><a class="treeview-item @yield('active-pais')" href="pais"><i class="icon fa  fa-user-friends nav-icon"></i> País</a></li>
         <li><a class="treeview-item @yield('active-departamento')" href="departamento"><i class="icon fa fa-id-card"></i> Departamento</a></li>
-        <li><a class="treeview-item @yield('active-municipio')" href="municipio"><i class="icon fa fa-building"></i> Municipios</a></li>
+        <li><a class="treeview-item @yield('active-municipio')" href="municipios"><i class="icon fa fa-building"></i> Municipios</a></li>
       </ul>
     </li>
   </ul>

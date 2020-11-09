@@ -29,6 +29,7 @@
         "datatables.net-dt": "^1.10.22",
         "jszip": "^3.5.0",
         "pdfmake": "^0.1.68",
+        "select2": "^4.0.13",
         "sweetalert": "^2.1.2"
     }
 }

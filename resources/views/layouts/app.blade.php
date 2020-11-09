@@ -23,8 +23,7 @@
       @yield('content')
     </main>
     <!-- Essential javascripts for application to work-->
-    <script src="{{asset('js/jquery-3.5.1.js')}}"></script>
-    
+    <script src="{{asset('js/jquery-3.5.1.js')}}"></script>    
     <script src="{{asset('js/bootstrap.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
     <!-- Page specific javascripts-->

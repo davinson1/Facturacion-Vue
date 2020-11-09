@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Ubicacion\PaisController;
+use App\Http\Controllers\Ubicacion\MunicipioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,11 +23,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function(){
-	Route::get('/pais', [PaisController::class, 'index']);
-	Route::get('/listar_paises', [PaisController::class, 'listar']);
-	Route::post('/pais_crear', [PaisController::class, 'create']);
-
-	Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
-	Route::put('/pais_editar', 'Ubicacion\PaisController@update');
-
+	// Rutas para pais
+		Route::get('/pais', [PaisController::class, 'index']);
+		Route::get('/listar_paises', [PaisController::class, 'listar']);
+		Route::post('/pais_crear', [PaisController::class, 'create']);
+		Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
+		Route::put('/pais_editar', 'Ubicacion\PaisController@update');
+	// Rutas para municipios
+    Route::get('/municipios', 'Ubicacion\MunicipiosController@index')->name('municipios');
+    Route::get('/listar_municipios', 'Ubicacion\MunicipiosController@listarMunicipios');
+    Route::post('/municipios_crear', 'Ubicacion\MunicipiosController@store')->name('municipios_crear');
+    Route::post('/municipios_editar', 'Ubicacion\MunicipiosController@update')->name('municipios_editar');
+    Route::post('/municipios_eliminar', 'Ubicacion\MunicipiosController@destroy')->name('municipios_eliminar');
 });
