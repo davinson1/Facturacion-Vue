@@ -23,7 +23,7 @@ window.Vue = require('vue');
 Vue.prototype.$tablaGlobal = function (idTabla) {
 	this.$nextTick(() => {
     $(idTabla).DataTable({
-        language: {
+      language: {
         search: " Buscar ",
         "lengthMenu":" Filtrar _MENU_ número de filas ",
          "info": "Página _PAGE_ de _PAGES_",

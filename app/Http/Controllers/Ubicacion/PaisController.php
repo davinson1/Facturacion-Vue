@@ -14,12 +14,12 @@ class PaisController extends Controller
    * @return \Illuminate\Http\Response
    */
   public function index()
-  {     
+  {
     return view('ubicacion.pais');
   }
   public function listar()
   {
-    return Paises::all();    
+    return Paises::all();
   }
 
   /**
