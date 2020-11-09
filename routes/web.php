@@ -31,18 +31,18 @@ Route::middleware(['auth'])->group(function(){
 		Route::post('/pais_crear', [PaisController::class, 'create']);
 		Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
 		Route::put('/pais_editar', 'Ubicacion\PaisController@update');
-  // Rutas para departamentos
-	  Route::get('/departamento', [DepartamentoController::class, 'index']);
-	  Route::get('/listar_departamentos', [DepartamentoController::class, 'listar']);
-	  Route::post('/departamento_crear', [DepartamentoController::class, 'create']);
-	  Route::get('/select_pais', [DepartamentoController::class, 'selectPais']);
-	  Route::delete('/departamento_eliminar/{id}', 'Ubicacion\DepartamentoController@destroy');
-	  Route::put('/departamento_editar', 'Ubicacion\DepartamentoController@update');
 	// Rutas para municipios
     Route::get('/municipios', 'Ubicacion\MunicipiosController@index')->name('municipios');
     Route::get('/listar_municipios', 'Ubicacion\MunicipiosController@listarMunicipios');
     Route::post('/municipios_crear', 'Ubicacion\MunicipiosController@store')->name('municipios_crear');
     Route::post('/municipios_editar', 'Ubicacion\MunicipiosController@update')->name('municipios_editar');
     Route::post('/municipios_eliminar', 'Ubicacion\MunicipiosController@destroy')->name('municipios_eliminar');
+	//Rutas para departamentos
+	  Route::get('/departamento', [DepartamentoController::class, 'index']);
+	  Route::get('/listar_departamentos', [DepartamentoController::class, 'listar']);
+	  Route::post('/departamento_crear', [DepartamentoController::class, 'create']);
+	  Route::get('/select_pais', [DepartamentoController::class, 'selectPais']);
+	  Route::delete('/departamento_eliminar/{id}', 'Ubicacion\DepartamentoController@destroy');
+	  Route::put('/departamento_editar', 'Ubicacion\DepartamentoController@update');
 
 });
