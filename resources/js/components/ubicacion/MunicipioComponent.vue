@@ -21,8 +21,8 @@
                 <form>
                   <div class="form-group">
                     <label for="idDepartamento">Seleccione el departamento</label>
-                    <select class="form-control selectdepar" v-model="crearMunicipio.idDepartamento" v-for="departamento in departamentos">
-                      <option>{{departamento.nombre}}</option>
+                    <select class="form-control select2" v-model="crearMunicipio.idDepartamento">
+                      <option v-for="departamento in departamentos" v-bind:value="departamento.id" :selected="crearMunicipio.idDepartamento === departamento.id">{{departamento.nombre}}</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -32,18 +32,19 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
                     <button type="submit" @click.prevent="crear" v-if='btncrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
-                    <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>
+                    <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>                    
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <div class="card-body">          
-          <table class="table table-hover" id="tableMunicipios">
+        <div class="card-body">
+          <table class="table table-hover" id="listado-tabla">
             <thead>
               <tr>
                 <th>#</th>
+                <th>Departamento</th>
                 <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
@@ -52,11 +53,12 @@
             <tbody>
               <tr v-for="item in municipios">
                 <td>{{item.id}}</td>
+                <td>{{item.relacion_departamentos.nombre}}</td>
                 <td>{{item.nombre}}</td>
                 <td>{{item.updated_at}}</td>
                 <td>
                   <button class="btn btn-primary btn-sm"  @click="editarPais(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" @click="eliminarpais(item)" type="button"><i class="fas fa-trash"></i></button>
+                  <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button"><i class="fas fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>          
@@ -71,8 +73,7 @@
   var id_municipio = ''
 
   export default {
-    mounted(){
-      this.$idTabla = '#tableMunicipios'
+    mounted(){      
       this.getMunicipios()
       $('#exampleModal').on('shown.bs.modal', function (e){
         $('.focus').focus();
@@ -82,7 +83,7 @@
       return {
         municipios: [],
         departamentos: [],
-        crearMunicipio:{idDepartamento:'',nombre:''},
+        crearMunicipio:{idDepartamento:'1',nombre:''},
         tituloModal:'',
         btncrear:true,
         btnEditar:false
@@ -96,41 +97,35 @@
         this.crearMunicipio.nombre='';          
       },      
       getMunicipios(){
-       axios.get('listar_municipios').then(res=>{
-          $('#tableMunicipios').DataTable().destroy()
-          this.municipios = res.data;
-          this.$tablaGlobal('#tableMunicipios')
+       axios.get('municipios/create').then(res=>{
+          $('#listado-tabla').DataTable().destroy()          
+          this.municipios = res.data.municipios
+          this.departamentos = res.data.departamentos
+          this.$tablaGlobal()
         });
       },
       crear(){
-        const datos = {
-          idDepartamento: '1',
-          nombre:this.crearMunicipio
-        };
-        this.crearMunicipio = {nombre: ''};
-        axios.post('municipios_crear', datos).then((res) =>{            
-            this.getMunicipios()
-            $('#exampleModal').hide()
-            $('#exampleModal').modal('hide')
-            $('.modal-backdrop').hide();
-            swal("Muy bien!", "Municipio creado correctamente", "success")
-          }).catch(function (error) {
-              console.log(error.response.data.errors.nombre);
-              swal("ooohhh Vaya!", ""+error.response.data.errors.nombre,"error");
-          });  
+        axios.post('municipios', this.crearMunicipio).then((res) =>{            
+          this.getMunicipios()
+          $('#exampleModal').hide()
+          $('#exampleModal').modal('hide')
+          $('.modal-backdrop').hide();
+          swal("Muy bien!", "Municipio creado correctamente", "success")
+        }).catch(function (error) {
+          console.log(error.response.data.errors.nombre);
+          swal("ooohhh Vaya!", ""+error.response.data.errors.nombre,"error");
+        });
       },
       editarPais(item){
         this.tituloModal=' Editar Municipio';
         this.btnEditar=true;
         this.btncrear=false;
+        this.crearMunicipio.idDepartamento = item.relacion_departamentos.id;
         this.crearMunicipio.nombre = item.nombre;
-        id_pais = item.id;
+        id_municipio = item.id;
       },
       editar(){
-        axios.put('/pais_editar',{
-          'id':id_pais,
-          'nombre':this.crearMunicipio.nombre,
-        }).then((res)=>{
+        axios.put('municipios/'+id_municipio, this.crearMunicipio).then((res)=>{
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide()
@@ -140,16 +135,16 @@
             console.log(error);
         });
       },           
-      eliminarpais(item){
+      eliminarMunicipio(item){
        swal({
-          title: "esta seguro de eliminar a "+item.nombre,
+          title: "Esta seguro de eliminar a "+item.nombre+"?",
           text: "Si preciona OK se eliminara permanentemente",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {                 
-          axios.delete('/municipios_eliminar/'+item.id).then((res)=>{            
+          axios.delete('municipios/'+item.id).then((res)=>{            
             this.getMunicipios()
             swal("Eliminado", "Municipio "+item.nombre+" eliminado correctamente", "success");
         })  

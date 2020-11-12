@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="card-body">          
-          <table class="table table-hover" id="tablaPais">
+          <table class="table table-hover" id="listado-tabla">
             <thead>
               <tr>
                 <th>#</th>
@@ -87,9 +87,9 @@
       },
       getPais(){
        const listar = axios.get('/listar_paises').then(res=>{
-          $('#tablaPais').DataTable().destroy()
+          $('#listado-tabla').DataTable().destroy()
           this.paises = res.data;
-          this.$tablaGlobal('#tablaPais')
+          this.$tablaGlobal()
         });
       },
       agregar(){

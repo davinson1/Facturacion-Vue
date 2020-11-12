@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover" id="myTable">
+          <table class="table table-hover" id="listado-tabla">
             <thead>
               <tr>
                 <th>#</th>
@@ -71,20 +71,7 @@
   </div>
 </template>
 <script>
-  import datatable from 'datatables.net-bs4'
-  require( 'datatables.net-buttons/js/dataTables.buttons' )
-  require( 'datatables.net-buttons/js/buttons.html5')
-  import print from 'datatables.net-buttons/js/buttons.print'
-  import jszip from 'jszip/dist/jszip'
-  import pdfMake from "pdfmake/build/pdfmake"
-  import pdfFonts from "pdfmake/build/vfs_fonts"
-  import swal from 'sweetalert'
-
-  pdfMake.vfs = pdfFonts.pdfMake.vfs
-  window.JSZip = jszip
-
   var id_pais = ''
-
   export default {
     mounted(){
       this.getDepartamentos()
@@ -104,7 +91,6 @@
         option:'',
         selecteditar:false,
         sedit:''
-
       }
     },
     methods:{
@@ -118,31 +104,29 @@
       },
       getDepartamentos(){
        const listar = axios.get('/listar_departamentos').then(res=>{
-          $('#myTable').DataTable().destroy()
+          $('#listado-tabla').DataTable().destroy()
           this.departamentos = res.data;
-          this.tabla()
+          this.$tablaGlobal()
         });
         axios.get('/select_pais').then(res=>{
         this.paises = res.data;
         });
       },
-
       agregar(){
         const deparnuevo = this.departamentocrear;
         this.departamentocrear = {selected:'',nombre: ''};
         console.log(deparnuevo)
         axios.post('/departamento_crear', deparnuevo).then((res) =>{
-            this.getDepartamentos()
-            $('#exampleModal').hide()
-            $('#exampleModal').modal('hide')
-            $('.modal-backdrop').hide();
-            swal("Muy bien!", "Departamento creado correctamente", "success")
-            this.departamentocrear.selected='1'
-          }).catch(function (error) {
-            var array = Object.values(error.response.data.errors);
-            array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
-
-          });
+          this.getDepartamentos()
+          $('#exampleModal').hide()
+          $('#exampleModal').modal('hide')
+          $('.modal-backdrop').hide();
+          swal("Muy bien!", "Departamento creado correctamente", "success")
+          this.departamentocrear.selected='1'
+        }).catch(function (error) {
+          var array = Object.values(error.response.data.errors);
+          array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
+        });
       },
       editarDepartamento(item){
         this.titulomodal=' Editar País';

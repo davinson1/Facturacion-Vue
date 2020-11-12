@@ -20,9 +20,9 @@ window.JSZip = jszip
 
 window.Vue = require('vue');
 
-Vue.prototype.$tablaGlobal = function (idTabla) {
+Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
-    $(idTabla).DataTable({
+    $('#listado-tabla').DataTable({
       language: {
         search: " Buscar ",
         "lengthMenu":" Filtrar _MENU_ número de filas ",
