@@ -83,14 +83,20 @@
       return {
         departamentos: [],
         paises: [],
-        departamentocrear:{selected:'1',nombre:''},
+        departamentocrear:{nombre:''},
         titulomodal:'',
         btncrear:true,
         btnEditar:false,
         optionvalue:'',
         option:'',
         selecteditar:false,
+<<<<<<< HEAD
         sedit:''
+=======
+        sedit:'',
+
+
+>>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
       }
     },
     methods:{
@@ -106,13 +112,18 @@
        const listar = axios.get('/listar_departamentos').then(res=>{
           $('#listado-tabla').DataTable().destroy()
           this.departamentos = res.data;
+<<<<<<< HEAD
           this.$tablaGlobal()
+=======
+          this.$tablaGlobal('#myTable')
+>>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
         });
         axios.get('/select_pais').then(res=>{
         this.paises = res.data;
         });
       },
       agregar(){
+<<<<<<< HEAD
         const deparnuevo = this.departamentocrear;
         this.departamentocrear = {selected:'',nombre: ''};
         console.log(deparnuevo)
@@ -127,6 +138,23 @@
           var array = Object.values(error.response.data.errors);
           array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
         });
+=======
+
+        axios.post('/departamento_crear',{
+          'id_pais':this.sedit,
+          'nombre':this.departamentocrear.nombre}).then((res) =>{
+            this.getDepartamentos()
+            $('#exampleModal').hide()
+            $('#exampleModal').modal('hide')
+            $('.modal-backdrop').hide();
+            swal("Muy bien!", "Departamento creado correctamente", "success")
+            this.departamentocrear.selected='1'
+          }).catch(function (error) {
+            var array = Object.values(error.response.data.errors);
+            array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
+
+          });
+>>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
       },
       editarDepartamento(item){
         this.titulomodal=' Editar País';

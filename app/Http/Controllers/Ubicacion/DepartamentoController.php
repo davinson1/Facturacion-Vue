@@ -37,16 +37,16 @@ class DepartamentoController extends Controller
     public function create(Request $request)
     {
       $data = request()->validate([
-        'selected' => 'required',
+        // 'selected' => 'required',
         'nombre' => 'required|min:3|max:100|unique:departamento,nombre|regex:/^[\pL\s\-]+$/u',
       ]);
 
       if($request->ajax())
       {
-        $pais = new Departamentos();
-        $pais->id_pais = $request->selected;
-        $pais->nombre = $request->nombre;
-        $pais->save();
+        $departamento = new Departamentos();
+        $departamento->id_pais = $request->id_pais;
+        $departamento->nombre = $request->nombre;
+        $departamento->save();
       }
     }
 
