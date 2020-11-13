@@ -6,12 +6,12 @@
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abirimodal">
           <i class="fas fa-plus-circle"></i> Registrar País
         </button>
-        <h3 class="tile-title">País</h3>
+        <h3 class="tile-title">Listado de países registrados</h3>
         <!-- Modal registrar-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{titulomodal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -20,11 +20,11 @@
               <div class="modal-body">
                 <form >
                   <div class="form-group">
-                  <label class="control-label">Nombre del país</label>
-                  <input class="form-control focus" type="text" placeholder="Ecriba el nombre del país" v-model="paiscrear.nombre">
+                    <label for="nombre" class="control-label">Nombre del país</label>
+                    <input id="nombre" class="form-control focus" type="text" placeholder="Escriba el nombre del país" v-model="paiscrear.nombre">
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
                     <button type="submit" @click.prevent="agregar" v-if='btncrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
                     <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>
                   </div>
@@ -33,37 +33,39 @@
             </div>
           </div>
         </div>
-        <div class="card-body">          
-          <table class="table table-hover" id="listado-tabla">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in paises">
-                <td>{{item.id}}</td>
-                <td>{{item.nombre}}</td>
-                <td>{{item.updated_at}}</td>
-                <td>
-                  <button class="btn btn-primary btn-sm"  @click="editarPais(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" @click="eliminarpais(item)" type="button"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-            </tbody>          
-          </table>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped" id="listado-tabla">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in paises">
+                  <td>{{item.id}}</td>
+                  <td>{{item.nombre}}</td>
+                  <td>{{item.updated_at}}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm"  @click="editarPais(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarpais(item)" type="button"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </template>
 <script>
   var id_pais = ''
   export default {
-    mounted(){      
+    mounted(){
       this.getPais()
       $('#exampleModal').on('shown.bs.modal', function (e) {
         $('.focus').focus();
@@ -81,21 +83,19 @@
     methods:{
       abirimodal(){
         this.titulomodal=' Crear País';
-        this.btnEditar=false;
-        this.btncrear=true;
-        this.paiscrear.nombre='';          
+        this.btnEditar=false
+        this.btncrear=true
+        this.paiscrear.nombre=''
       },
       getPais(){
-       const listar = axios.get('/listar_paises').then(res=>{
+       const listar = axios.get('paises/create').then(res=>{
           $('#listado-tabla').DataTable().destroy()
-          this.paises = res.data;
+          this.paises = res.data
           this.$tablaGlobal()
         });
       },
       agregar(){
-        const paisnuevo = this.paiscrear;
-        this.paiscrear = {nombre: ''};
-        axios.post('/pais_crear', paisnuevo).then((res) =>{            
+        axios.post('paises', this.paiscrear).then((res) =>{
             this.getPais()
             $('#exampleModal').hide()
             $('#exampleModal').modal('hide')
@@ -103,7 +103,7 @@
             swal("Muy bien!", "País creado correctamente", "success")
           }).catch(function (error) {
               console.log(error.response.data.errors.nombre);
-              swal("ooohhh Vaya!", ""+error.response.data.errors.nombre,"error");
+              swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error");
           });  
       },
       editarPais(item){
@@ -114,10 +114,7 @@
         id_pais = item.id;
       },
       editar(){
-        axios.put('/pais_editar',{
-          'id':id_pais,
-          'nombre':this.paiscrear.nombre,
-        }).then((res)=>{
+        axios.put('paises/'+id_pais,this.paiscrear).then((res)=>{
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide()
@@ -126,28 +123,25 @@
         }).catch(function (error) {
             console.log(error);
         });
-      },           
+      },
       eliminarpais(item){
-       swal({
-          title: "esta seguro de eliminar a "+item.nombre,
-          text: "Si preciona OK se eliminara permanentemente",
+        swal({
+          title: "¿Está seguro de eliminar a "+item.nombre+"?",
+          text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
-          if (willDelete) {                 
-          axios.delete('/paises_eliminar/'+item.id).then((res)=>{            
-            this.getPais()
-            swal("Eliminado", "País "+item.nombre+" eliminado correctamente", "success");
-        })  
-        .catch(function (error) {
-          console.log(error);
-          swal("ooohhh Vaya!","no se pudo eliminar el pais, ya esta asociado a un departamento", "error");
-        });   
-        } 
-      });
-    },
-
+          if (willDelete) {
+            axios.delete('paises/'+item.id).then((res)=>{
+              this.getPais()
+              swal("Eliminado", "País "+item.nombre+" eliminado correctamente.", "success");
+            }).catch(function (error) {
+              swal("Ooohhh vaya!","No se pudo eliminar el país, ya está asociado a un departamento.", "error");
+            });
+          } 
+        });
+      },
     }
   }
 </script>

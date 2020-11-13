@@ -2,16 +2,16 @@
   <div class="container">
     <div class="col-md-12">
       <div class="tile">
-      <!-- Button modal registrar -->
+        <!-- Button modal registrar -->
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abrirModal">
           <i class="fas fa-plus-circle"></i> Registrar municipio
         </button>
-        <h3 class="tile-title">Municipio</h3>
+        <h3 class="tile-title">Listado de municipios</h3>
         <!-- Modal registrar-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -20,9 +20,9 @@
               <div class="modal-body">
                 <form>
                   <div class="form-group">
-                    <label for="idDepartamento">Seleccione el departamento</label>
-                    <select class="form-control select2" v-model="crearMunicipio.idDepartamento">
-                      <option v-for="departamento in departamentos" v-bind:value="departamento.id" :selected="crearMunicipio.idDepartamento === departamento.id">{{departamento.nombre}}</option>
+                    <label for="departamento">Seleccione el departamento</label>
+                    <select id="departamento" class="form-control select2" v-model="crearMunicipio.idDepartamento">
+                      <option v-for="departamento in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -30,9 +30,9 @@
                     <input class="form-control focus" type="text" placeholder="Ecriba el nombre del Municipio" v-model="crearMunicipio.nombre">
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
                     <button type="submit" @click.prevent="crear" v-if='btncrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
-                    <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>                    
+                    <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>
                   </div>
                 </form>
               </div>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover" id="listado-tabla">
+          <table class="table table-hover table-striped" id="listado-tabla">
             <thead>
               <tr>
                 <th>#</th>
@@ -57,23 +57,22 @@
                 <td>{{item.nombre}}</td>
                 <td>{{item.updated_at}}</td>
                 <td>
-                  <button class="btn btn-primary btn-sm"  @click="editarPais(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
                   <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button"><i class="fas fa-trash"></i></button>
                 </td>
               </tr>
-            </tbody>          
+            </tbody>
           </table>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </template>
-<script> 
-
+<script>
   var id_municipio = ''
 
   export default {
-    mounted(){      
+    mounted(){
       this.getMunicipios()
       $('#exampleModal').on('shown.bs.modal', function (e){
         $('.focus').focus();
@@ -94,18 +93,18 @@
         this.tituloModal=' Crear Municipio';
         this.btnEditar=false;
         this.btncrear=true;
-        this.crearMunicipio.nombre='';          
-      },      
+        this.crearMunicipio.nombre='';
+      },
       getMunicipios(){
-       axios.get('municipios/create').then(res=>{
-          $('#listado-tabla').DataTable().destroy()          
+        axios.get('municipios/create').then(res=>{
+          $('#listado-tabla').DataTable().destroy()
           this.municipios = res.data.municipios
           this.departamentos = res.data.departamentos
           this.$tablaGlobal()
         });
       },
       crear(){
-        axios.post('municipios', this.crearMunicipio).then((res) =>{            
+        axios.post('municipios', this.crearMunicipio).then((res) =>{
           this.getMunicipios()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
@@ -113,10 +112,10 @@
           swal("Muy bien!", "Municipio creado correctamente", "success")
         }).catch(function (error) {
           console.log(error.response.data.errors.nombre);
-          swal("ooohhh Vaya!", ""+error.response.data.errors.nombre,"error");
+          swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error");
         });
       },
-      editarPais(item){
+      editarMunicipio(item){
         this.tituloModal=' Editar Municipio';
         this.btnEditar=true;
         this.btncrear=false;
@@ -132,30 +131,29 @@
           this.getMunicipios()
           swal("Muy bien!", "Municipio editado correctamente", "success")
         }).catch(function (error) {
-            console.log(error);
+          var array = Object.values(error.response.data.errors);
+          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
         });
-      },           
+      },
       eliminarMunicipio(item){
-       swal({
-          title: "Esta seguro de eliminar a "+item.nombre+"?",
-          text: "Si preciona OK se eliminara permanentemente",
+        swal({
+          title: "¿Está seguro de eliminar a "+item.nombre+"?",
+          text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
-          if (willDelete) {                 
-          axios.delete('municipios/'+item.id).then((res)=>{            
-            this.getMunicipios()
-            swal("Eliminado", "Municipio "+item.nombre+" eliminado correctamente", "success");
-        })  
-        .catch(function (error) {
-          console.log(error);
-          swal("ooohhh Vaya!","no se pudo eliminar el pais, ya esta asociado a un departamento", "error");
-        });   
-        } 
-      });
-    },
-
+          if (willDelete) {
+            axios.delete('municipios/'+item.id).then((res)=>{
+              this.getMunicipios()
+              swal("Eliminado", "Municipio "+item.nombre+" eliminado correctamente.", "success");
+            }).catch(function (error) {
+              console.log(error);
+              swal("Ooohhh vaya!","No se pudo eliminar el municipio, ya está asociado a un usuario.", "error");
+            });
+          } 
+        });
+      },
     }
   }
 </script>

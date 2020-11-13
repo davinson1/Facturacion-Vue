@@ -6,13 +6,13 @@
         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abirimodal">
           <i class="fas fa-plus-circle"></i> Registrar Departamento
         </button>
-        <h3 class="tile-title">Departamentos</h3>
+        <h3 class="tile-title"> Listado de departamentos</h3>
         <!-- Modal registrar-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{titulomodal}} </h5>
+              <div class="modal-header bg-primary">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,20 +20,18 @@
               <div class="modal-body">
                 <form >
                   <div class="form-group">
-                  <label class="control-label">Nombre del Departamento</label>
-                  <input class="form-control focus" type="text" placeholder="Ecriba el nombre del departamento" v-model="departamentocrear.nombre">
-                  <label class="control-label">Seleecione un país</label>
-
-
-                    <select  v-model="sedit" class="form-control">
-                    <option :value="optionvalue" v-model="option" v-show="selecteditar">{{option}}</option>
-                     <option v-for="pais in paises"  v-bind:value="pais.id" v-text="pais.nombre"></option>
+                    <label class="control-label" for="pais">Seleccione un país</label>
+                    <select id="pais" v-model="crearDepartamento.idPais" class="form-control select2">
+                     <option v-for="pais in paises" v-bind:value="pais.id" >{{ pais.nombre }}</option>
                     </select>
-
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="nombre">Nombre del departamento</label>
+                    <input id="nombre" class="form-control focus" type="text" placeholder="Escriba el nombre del departamento" v-model="crearDepartamento.nombre">
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
-                    <button type="submit" @click.prevent="agregar" v-if='btncrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
+                    <button type="submit" @click.prevent="agregar" v-if='btnCrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
                     <button type="submit" @click.prevent="editar" v-if="btnEditar" class="btn btn-primary"><i class="fas fa-save"></i> Editar</button>
                   </div>
                 </form>
@@ -42,36 +40,39 @@
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover" id="listado-tabla">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>País</th>
-                <th>Nombre Departamento</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in departamentos">
-                <td>{{item.id}}</td>
-                <td>{{item.pais.nombre}}</td>
-                <td>{{item.nombre}}</td>
-                <td>{{item.updated_at}}</td>
-                <td>
-                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        	<div class="table-responsive">
+	          <table class="table table-hover table-striped" id="listado-tabla">
+	            <thead>
+	              <tr>
+	                <th>#</th>
+	                <th>País</th>
+	                <th>Nombre Departamento</th>
+	                <th>Fecha</th>
+	                <th>Acciones</th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr v-for="item in departamentos">
+	                <td>{{item.id}}</td>
+	                <td>{{item.pais.nombre}}</td>
+	                <td>{{item.nombre}}</td>
+	                <td>{{item.updated_at}}</td>
+	                <td>
+	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
+	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button"><i class="fas fa-trash"></i></button>
+	                </td>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-  var id_pais = ''
+  var id_departamento = ''
+
   export default {
     mounted(){
       this.getDepartamentos()
@@ -83,127 +84,79 @@
       return {
         departamentos: [],
         paises: [],
-        departamentocrear:{nombre:''},
-        titulomodal:'',
-        btncrear:true,
+        crearDepartamento:{idPais:'1',nombre:''},
+        tituloModal:'',
+        btnCrear:true,
         btnEditar:false,
-        optionvalue:'',
-        option:'',
-        selecteditar:false,
-<<<<<<< HEAD
-        sedit:''
-=======
-        sedit:'',
-
-
->>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
       }
     },
     methods:{
       abirimodal(){
-        this.titulomodal=' Crear Departamento';
+        this.tituloModal=' Crear Departamento';
         this.btnEditar=false;
-        this.btncrear=true;
-        this.departamentocrear.nombre='';
-        this.sedit='1';
-        this.selecteditar=false;
+        this.btnCrear=true;
+        this.crearDepartamento.nombre='';
       },
       getDepartamentos(){
-       const listar = axios.get('/listar_departamentos').then(res=>{
+       axios.get('departamentos/create').then(res=>{
           $('#listado-tabla').DataTable().destroy()
-          this.departamentos = res.data;
-<<<<<<< HEAD
+          this.departamentos = res.data.departamentos;
+          this.paises = res.data.paises;
           this.$tablaGlobal()
-=======
-          this.$tablaGlobal('#myTable')
->>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
-        });
-        axios.get('/select_pais').then(res=>{
-        this.paises = res.data;
         });
       },
       agregar(){
-<<<<<<< HEAD
-        const deparnuevo = this.departamentocrear;
-        this.departamentocrear = {selected:'',nombre: ''};
-        console.log(deparnuevo)
-        axios.post('/departamento_crear', deparnuevo).then((res) =>{
+        axios.post('departamentos', this.crearDepartamento).then((res) =>{
           this.getDepartamentos()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide();
           swal("Muy bien!", "Departamento creado correctamente", "success")
-          this.departamentocrear.selected='1'
+          this.crearDepartamento.selected='1'
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);
-          array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
+          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
         });
-=======
-
-        axios.post('/departamento_crear',{
-          'id_pais':this.sedit,
-          'nombre':this.departamentocrear.nombre}).then((res) =>{
-            this.getDepartamentos()
-            $('#exampleModal').hide()
-            $('#exampleModal').modal('hide')
-            $('.modal-backdrop').hide();
-            swal("Muy bien!", "Departamento creado correctamente", "success")
-            this.departamentocrear.selected='1'
-          }).catch(function (error) {
-            var array = Object.values(error.response.data.errors);
-            array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
-
-          });
->>>>>>> 9ec10527aea153316af7019faa44da2c308debd5
       },
       editarDepartamento(item){
-        this.titulomodal=' Editar País';
+        this.tituloModal=' Editar País';
         this.btnEditar=true;
-        this.btncrear=false;
-        this.selecteditar=true;
-        this.departamentocrear.nombre = item.nombre;
-        this.optionvalue = item.pais.id;
-        this.option = item.pais.nombre;
-        id_pais = item.id;
-        this.sedit= item.pais.id;
+        this.btnCrear=false;
+        this.crearDepartamento.idPais = item.pais.id;
+        this.crearDepartamento.nombre = item.nombre;
+        id_departamento = item.id
       },
       editar(){
-        axios.put('/departamento_editar',{
-          'id':id_pais,
-          'id_pais':this.sedit,
-          'nombre':this.departamentocrear.nombre,
-        }).then((res)=>{
+        axios.put('departamentos/'+id_departamento,this.crearDepartamento).then((res)=>{
+          this.getDepartamentos()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide()
-          this.getDepartamentos()
           swal("Muy bien!", "Departamento editado correctamente", "success")
         }).catch(function (error) {
-             var array = Object.values(error.response.data.errors);
-            array.forEach(element => swal("ooohhh Vaya!", ""+element,"error"));
+          var array = Object.values(error.response.data.errors);
+          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
         });
       },
       eliminarDepartamento(item){
-       swal({
-          title: "esta seguro de eliminar a "+item.nombre,
-          text: "Si preciona OK se eliminara permanentemente",
+	      swal({
+          title: "¿Está seguro de eliminar a "+item.nombre+"?",
+          text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
-          axios.delete('/departamento_eliminar/'+item.id).then((res)=>{
-            this.getDepartamentos()
-            swal("Eliminado", "País "+item.nombre+" eliminado correctamente", "success");
-        })
-        .catch(function (error) {
-          console.log(error);
-          swal("ooohhh Vaya!","no se pudo eliminar el departamento, ya esta asociado a un municipio", "error");
-        });
-        }
-      });
-    },
-
+          	axios.delete('departamentos/'+item.id).then((res)=>{
+	            this.getDepartamentos()
+	            swal("Eliminado", "País "+item.nombre+" eliminado correctamente.", "success");
+		        }).catch(function (error) {
+		          console.log(error);
+		          swal("Ooohhh vaya!","No se pudo eliminar el departamento, ya está asociado a un municipio.", "error");
+		        });
+	        }
+	      });
+	    },
     }
   }
 </script>

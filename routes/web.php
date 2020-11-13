@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Ubicacion\DepartamentoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Ubicacion\PaisController;
+use Ubicacion\PaisController;
+use Ubicacion\DepartamentoController;
 use Ubicacion\MunicipiosController;
 
 /*
@@ -15,30 +15,16 @@ use Ubicacion\MunicipiosController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('auth/login');
-});
-
+Route::get('/', 'Auth\LoginController@index');
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function(){
+	// Ruta de home
+		Route::get('/home', 'HomeController@index')->name('home');
 	// Rutas para pais
-		Route::get('/pais', [PaisController::class, 'index']);
-		Route::get('/listar_paises', [PaisController::class, 'listar']);
-		Route::post('/pais_crear', [PaisController::class, 'create']);
-		Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
-		Route::put('/pais_editar', 'Ubicacion\PaisController@update');
+		Route::resource('paises', PaisController::class)->except(['show', 'edit',]);
 	// Rutas para municipios
-		// Route::resource('municipios', 'Ubicacion\MunicipiosController', ['except' => 'show', 'edit']);
 		Route::resource('municipios', MunicipiosController::class)->except(['show', 'edit',]);
   // Rutas para departamentos
-	  Route::get('/departamento', [DepartamentoController::class, 'index']);
-	  Route::get('/listar_departamentos', [DepartamentoController::class, 'listar']);
-	  Route::post('/departamento_crear', [DepartamentoController::class, 'create']);
-	  Route::get('/select_pais', [DepartamentoController::class, 'selectPais']);
-	  Route::delete('/departamento_eliminar/{id}', 'Ubicacion\DepartamentoController@destroy');
-	  Route::put('/departamento_editar', 'Ubicacion\DepartamentoController@update');
-
+		Route::resource('departamentos', DepartamentoController::class)->except(['show', 'edit',]);
 });
