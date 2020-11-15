@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function(){
 	// Ruta de home
 		Route::get('/home', 'HomeController@index')->name('home');
 	// Rutas para pais
-		Route::resource('paises', PaisController::class)->except(['show', 'edit',]);
+		Route::resource('paises', PaisController::class)->except(['show', 'edit',])->middleware('permission:ver pais');
 	// Rutas para municipios
 		Route::resource('municipios', MunicipiosController::class)->except(['show', 'edit',]);
   // Rutas para departamentos

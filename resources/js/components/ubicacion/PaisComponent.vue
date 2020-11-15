@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
       <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abirimodal">
+        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abrirModal">
           <i class="fas fa-plus-circle"></i> Registrar País
         </button>
         <h3 class="tile-title">Listado de países registrados</h3>
@@ -81,7 +81,7 @@
       }
     },
     methods:{
-      abirimodal(){
+      abrirModal(){
         this.titulomodal=' Crear País';
         this.btnEditar=false
         this.btncrear=true
@@ -99,19 +99,19 @@
             this.getPais()
             $('#exampleModal').hide()
             $('#exampleModal').modal('hide')
-            $('.modal-backdrop').hide();
+            $('.modal-backdrop').hide()
             swal("Muy bien!", "País creado correctamente", "success")
           }).catch(function (error) {
-              console.log(error.response.data.errors.nombre);
-              swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error");
+              console.log(error.response.data.errors.nombre)
+              swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error")
           });  
       },
       editarPais(item){
-        this.titulomodal=' Editar País';
-        this.btnEditar=true;
-        this.btncrear=false;
-        this.paiscrear.nombre = item.nombre;
-        id_pais = item.id;
+        this.titulomodal=' Editar País'
+        this.btnEditar=true
+        this.btncrear=false
+        this.paiscrear.nombre = item.nombre
+        id_pais = item.id
       },
       editar(){
         axios.put('paises/'+id_pais,this.paiscrear).then((res)=>{
@@ -121,7 +121,7 @@
           this.getPais()
           swal("Muy bien!", "País editado correctamente", "success")
         }).catch(function (error) {
-            console.log(error);
+            console.log(error)
         });
       },
       eliminarpais(item){

@@ -40,29 +40,31 @@
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-striped" id="listado-tabla">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Departamento</th>
-                <th>Nombre</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in municipios">
-                <td>{{item.id}}</td>
-                <td>{{item.relacion_departamentos.nombre}}</td>
-                <td>{{item.nombre}}</td>
-                <td>{{item.updated_at}}</td>
-                <td>
-                  <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped" id="listado-tabla">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Departamento</th>
+                  <th>Nombre</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in municipios">
+                  <td>{{item.id}}</td>
+                  <td>{{item.relacion_departamentos.nombre}}</td>
+                  <td>{{item.nombre}}</td>
+                  <td>{{item.updated_at}}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -90,10 +92,10 @@
     },
     methods:{
       abrirModal(){
-        this.tituloModal=' Crear Municipio';
-        this.btnEditar=false;
-        this.btncrear=true;
-        this.crearMunicipio.nombre='';
+        this.tituloModal=' Crear Municipio'
+        this.btnEditar=false
+        this.btncrear=true
+        this.crearMunicipio.nombre=''
       },
       getMunicipios(){
         axios.get('municipios/create').then(res=>{
@@ -108,11 +110,11 @@
           this.getMunicipios()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
-          $('.modal-backdrop').hide();
+          $('.modal-backdrop').hide()
           swal("Muy bien!", "Municipio creado correctamente", "success")
         }).catch(function (error) {
-          console.log(error.response.data.errors.nombre);
-          swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error");
+          console.log(error.response.data.errors.nombre)
+          swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error")
         });
       },
       editarMunicipio(item){
@@ -131,8 +133,8 @@
           this.getMunicipios()
           swal("Muy bien!", "Municipio editado correctamente", "success")
         }).catch(function (error) {
-          var array = Object.values(error.response.data.errors);
-          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
+          var array = Object.values(error.response.data.errors)
+          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"))
         });
       },
       eliminarMunicipio(item){

@@ -22,6 +22,7 @@ class PermisosTablaSeeder extends Seeder
     app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
     // create permissions
+    Permission::create(['name' => 'modulo-ubicacion']);
     Permission::create(['name' => 'ver pais']);
     Permission::create(['name' => 'crear pais']);
     Permission::create(['name' => 'editar pais']);

@@ -8,18 +8,28 @@ use App\Models\Paises;
 
 class PaisController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver pais')->only(['index','create']);    
+    $this->middleware('permission:crear pais')->only('store');
+    $this->middleware('permission:editar pais')->only('update');
+    $this->middleware('permission:eliminar pais')->only('destroy');
+  }
   public function index()
   {
-    return view('ubicacion.pais');
+    $roless = auth()->user()->getAllPermissions();    
+    return view('ubicacion.pais', compact('roless'));
   }
 
   public function create(Request $request)
   {
+    // $this->middleware('permission:post-create');    
     return Paises::all();
   }
 
   public function store(Request $request)
   {
+    // $this->authorize('create', Post::class);
     $data = request()->validate([
       'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
     ]);
@@ -34,6 +44,7 @@ class PaisController extends Controller
 
   public function update(Request $request, Paises $paise)
   {
+    // $this->authorize('update', $post);
     if($request->ajax())
     {
       $data = request()->validate([
