@@ -8,28 +8,28 @@ use App\Models\Paises;
 
 class PaisController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index()
-  {     
-    return view('ubicacion.pais');
-  }
-  public function listar()
+  public function __construct()
   {
-    return Paises::all();    
+    $this->middleware('permission:ver pais')->only(['index','create']);    
+    $this->middleware('permission:crear pais')->only('store');
+    $this->middleware('permission:editar pais')->only('update');
+    $this->middleware('permission:eliminar pais')->only('destroy');
+  }
+  public function index()
+  {
+    $roless = auth()->user()->getAllPermissions();    
+    return view('ubicacion.pais', compact('roless'));
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
   public function create(Request $request)
   {
+    // $this->middleware('permission:post-create');    
+    return Paises::all();
+  }
 
+  public function store(Request $request)
+  {
+    // $this->authorize('create', Post::class);
     $data = request()->validate([
       'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
     ]);
@@ -42,62 +42,21 @@ class PaisController extends Controller
     }
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store(Request $request)
+  public function update(Request $request, Paises $paise)
   {
-      //
+    // $this->authorize('update', $post);
+    if($request->ajax())
+    {
+      $data = request()->validate([
+        'nombre' => 'required|min:3|max:100|unique:pais,nombre,'.$paise->id,
+      ]);
+
+      $paise->update($data);
+    }
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
+  public function destroy(Paises $paise)
   {
-      //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-      //
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request)
-  {
-    $pais = Paises::Find($request->id);
-    $pais->nombre = $request->nombre;
-    $pais->save();
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy($id)
-  {
-    $pais = Paises::find($id);
-    $pais->delete();
+    $paise->delete();
   }
 }

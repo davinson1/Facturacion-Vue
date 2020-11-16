@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Ubicacion\PaisController;
+use Ubicacion\PaisController;
+use Ubicacion\DepartamentoController;
+use Ubicacion\MunicipiosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,20 +15,16 @@ use App\Http\Controllers\Ubicacion\PaisController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('auth/login');
-});
-
+Route::get('/', 'Auth\LoginController@index');
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function(){
-	Route::get('/pais', [PaisController::class, 'index']);
-	Route::get('/listar_paises', [PaisController::class, 'listar']);
-	Route::post('/pais_crear', [PaisController::class, 'create']);
-
-	Route::delete('/paises_eliminar/{id}', 'Ubicacion\PaisController@destroy');
-	Route::put('/pais_editar', 'Ubicacion\PaisController@update');
-
+	// Ruta de home
+		Route::get('/home', 'HomeController@index')->name('home');
+	// Rutas para pais
+		Route::resource('paises', PaisController::class)->except(['show', 'edit',])->middleware('permission:ver pais');
+	// Rutas para municipios
+		Route::resource('municipios', MunicipiosController::class)->except(['show', 'edit',]);
+  // Rutas para departamentos
+		Route::resource('departamentos', DepartamentoController::class)->except(['show', 'edit',]);
 });
