@@ -45,13 +45,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in paises">
-                  <td>{{item.id}}</td>
-                  <td>{{item.nombre}}</td>
-                  <td>{{item.updated_at}}</td>
+                <tr v-for="pais in paises">
+                  <td>{{pais.id}}</td>
+                  <td>{{pais.nombre}}</td>
+                  <td>{{pais.updated_at}}</td>
                   <td>
-                    <button class="btn btn-primary btn-sm"  @click="editarPais(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" @click="eliminarpais(item)" type="button"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary btn-sm"  @click="editarPais(pais)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarpais(pais)" type="button"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -106,12 +106,12 @@
               swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error")
           });  
       },
-      editarPais(item){
+      editarPais(pais){
         this.titulomodal=' Editar País'
         this.btnEditar=true
         this.btncrear=false
-        this.paiscrear.nombre = item.nombre
-        id_pais = item.id
+        this.paiscrear.nombre = pais.nombre
+        id_pais = pais.id
       },
       editar(){
         axios.put('paises/'+id_pais,this.paiscrear).then((res)=>{
@@ -124,18 +124,18 @@
             console.log(error)
         });
       },
-      eliminarpais(item){
+      eliminarpais(pais){
         swal({
-          title: "¿Está seguro de eliminar a "+item.nombre+"?",
+          title: "¿Está seguro de eliminar a "+pais.nombre+"?",
           text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
-            axios.delete('paises/'+item.id).then((res)=>{
+            axios.delete('paises/'+pais.id).then((res)=>{
               this.getPais()
-              swal("Eliminado", "País "+item.nombre+" eliminado correctamente.", "success");
+              swal("Eliminado", "País "+pais.nombre+" eliminado correctamente.", "success");
             }).catch(function (error) {
               swal("Ooohhh vaya!","No se pudo eliminar el país, ya está asociado a un departamento.", "error");
             });
