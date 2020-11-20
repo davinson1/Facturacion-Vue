@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
       <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abirimodal">
+        <button type="button" class="btn btn-primary float-right" @click="abirimodal" v-if="can('crear departamento')">
           <i class="fas fa-plus-circle"></i> Registrar Departamento
         </button>
         <h3 class="tile-title"> Listado de departamentos</h3>
@@ -11,7 +11,7 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header bg-primary">
+              <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -56,10 +56,10 @@
 	                <td>{{item.id}}</td>
 	                <td>{{item.pais.nombre}}</td>
 	                <td>{{item.nombre}}</td>
-	                <td>{{item.updated_at}}</td>
+	                <td>{{fecha(item.updated_at)}}</td>
 	                <td>
-	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button"><i class="fas fa-trash"></i></button>
+	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" type="button" v-if="can('editar departamento')"><i class="fas fa-edit"></i></button>
+	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button" v-if="can('eliminar departamento')"><i class="fas fa-trash"></i></button>
 	                </td>
 	              </tr>
 	            </tbody>
@@ -71,8 +71,6 @@
   </div>
 </template>
 <script>
-  var id_departamento = ''
-
   export default {
     mounted(){
       this.getDepartamentos()
@@ -88,20 +86,22 @@
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
+        idDepartamento:''
       }
     },
     methods:{
       abirimodal(){
-        this.tituloModal=' Crear Departamento';
-        this.btnEditar=false;
-        this.btnCrear=true;
-        this.crearDepartamento.nombre='';
+        this.tituloModal=' Crear Departamento'
+        this.btnEditar=false
+        this.btnCrear=true
+        this.crearDepartamento.nombre=''
+        $('#exampleModal').modal('show')
       },
       getDepartamentos(){
        axios.get('departamentos/create').then(res=>{
           $('#listado-tabla').DataTable().destroy()
-          this.departamentos = res.data.departamentos;
-          this.paises = res.data.paises;
+          this.departamentos = res.data.departamentos
+          this.paises = res.data.paises
           this.$tablaGlobal()
         });
       },
@@ -110,7 +110,7 @@
           this.getDepartamentos()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
-          $('.modal-backdrop').hide();
+          $('.modal-backdrop').hide()
           swal("Muy bien!", "Departamento creado correctamente", "success")
           this.crearDepartamento.selected='1'
         }).catch(function (error) {
@@ -119,15 +119,16 @@
         });
       },
       editarDepartamento(item){
-        this.tituloModal=' Editar País';
-        this.btnEditar=true;
-        this.btnCrear=false;
-        this.crearDepartamento.idPais = item.pais.id;
-        this.crearDepartamento.nombre = item.nombre;
-        id_departamento = item.id
+        this.tituloModal=' Editar País'
+        this.btnEditar=true
+        this.btnCrear=false
+        this.crearDepartamento.idPais = item.pais.id
+        this.crearDepartamento.nombre = item.nombre
+        this.idDepartamento = item.id
+        $('#exampleModal').modal('show')
       },
       editar(){
-        axios.put('departamentos/'+id_departamento,this.crearDepartamento).then((res)=>{
+        axios.put('departamentos/'+this.idDepartamento,this.crearDepartamento).then((res)=>{
           this.getDepartamentos()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
@@ -150,8 +151,7 @@
           	axios.delete('departamentos/'+item.id).then((res)=>{
 	            this.getDepartamentos()
 	            swal("Eliminado", "País "+item.nombre+" eliminado correctamente.", "success");
-		        }).catch(function (error) {
-		          console.log(error);
+		        }).catch(function (error) {		          
 		          swal("Ooohhh vaya!","No se pudo eliminar el departamento, ya está asociado a un municipio.", "error");
 		        });
 	        }

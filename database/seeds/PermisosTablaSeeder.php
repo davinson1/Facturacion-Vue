@@ -21,22 +21,45 @@ class PermisosTablaSeeder extends Seeder
     // Reset cached roles and permissions
     app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-    // create permissions
+    // crear permisos pais
     Permission::create(['name' => 'modulo-ubicacion']);
     Permission::create(['name' => 'ver pais']);
     Permission::create(['name' => 'crear pais']);
     Permission::create(['name' => 'editar pais']);
     Permission::create(['name' => 'eliminar pais']);
+    // crear permisos municipio
+    Permission::create(['name' => 'ver municipio']);
+    Permission::create(['name' => 'crear municipio']);
+    Permission::create(['name' => 'editar municipio']);
+    Permission::create(['name' => 'eliminar municipio']);
+    // crear permisos departamento
+    Permission::create(['name' => 'ver departamento']);
+    Permission::create(['name' => 'crear departamento']);
+    Permission::create(['name' => 'editar departamento']);
+    Permission::create(['name' => 'eliminar departamento']);
 
     // create roles and assign existing permissions
     $role1 = Role::create(['name' => 'supervisor']);
-    $role1->givePermissionTo('ver pais');
-    $role1->givePermissionTo('crear pais');
+    $role1->givePermissionTo(
+      'ver pais',
+      'ver municipio',
+      'ver departamento',
+      'crear pais',
+      'crear municipio',
+      'crear departamento');    
 
     $role2 = Role::create(['name' => 'admin']);
-    $role2->givePermissionTo('ver pais');
-    $role2->givePermissionTo('crear pais');
-    $role2->givePermissionTo('editar pais');
+    $role2->givePermissionTo(
+      'modulo-ubicacion'
+      'ver pais',
+      'ver municipio',
+      'ver departamento',
+      'crear pais',
+      'crear municipio',
+      'crear departamento',
+      'eliminar pais',
+      'eliminar municipio',
+      'eliminar departamento');    
 
     $role3 = Role::create(['name' => 'super-admin']);
 

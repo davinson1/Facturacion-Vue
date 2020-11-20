@@ -14,14 +14,25 @@ import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import swal from 'sweetalert'
 import select2 from 'select2'
+import moment from 'moment'
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 window.JSZip = jszip
 
 window.Vue = require('vue');
 
+Vue.prototype.can = function(permissionName){
+  return Permissions.indexOf(permissionName) !== -1;
+}
+Vue.prototype.fecha = function(d){
+  return moment(d).lang('es').format('LL');
+}
+
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
+    $('.select2').select2({
+       width: '100%'
+    });
     $('#listado-tabla').DataTable({
       language: {
         search: " Buscar ",
@@ -101,5 +112,5 @@ Vue.component('municipio-component', require('./components/ubicacion/MunicipioCo
  */
 
 const app = new Vue({
-    el: '#app',	  
+    el: '#app'
 });

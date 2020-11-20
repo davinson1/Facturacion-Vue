@@ -17,25 +17,22 @@ class PaisController extends Controller
   }
   public function index()
   {
-    $roless = auth()->user()->getAllPermissions();    
-    return view('ubicacion.pais', compact('roless'));
+    return view('ubicacion.pais');
   }
 
   public function create(Request $request)
   {
-    // $this->middleware('permission:post-create');    
     return Paises::all();
   }
 
   public function store(Request $request)
   {
-    // $this->authorize('create', Post::class);
-    $data = request()->validate([
-      'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
-    ]);
 
     if($request->ajax())
     {
+      $data = request()->validate([
+        'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
+      ]);
       $pais = new Paises();
       $pais->nombre = $request->nombre;
       $pais->save();
@@ -44,7 +41,6 @@ class PaisController extends Controller
 
   public function update(Request $request, Paises $paise)
   {
-    // $this->authorize('update', $post);
     if($request->ajax())
     {
       $data = request()->validate([

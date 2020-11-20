@@ -35,7 +35,7 @@
               <a class="treeview-item @yield('active-departamento')" href="departamentos"><i class="icon fas fa-location-arrow"></i> Departamento</a>
             </li>
           @endcan
-          @can('ver municipios')
+          @can('ver municipio')
             <li>
               <a class="treeview-item @yield('active-municipio')" href="municipios"><i class="icon fas fa-thumbtack"></i> Municipios</a>
             </li>

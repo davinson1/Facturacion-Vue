@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function(){
 	// Rutas para pais
 		Route::resource('paises', PaisController::class)->except(['show', 'edit',])->middleware('permission:ver pais');
 	// Rutas para municipios
-		Route::resource('municipios', MunicipiosController::class)->except(['show', 'edit',]);
+		Route::resource('municipios', MunicipiosController::class)->except(['show', 'edit',])->middleware('permission:ver municipio');
   // Rutas para departamentos
-		Route::resource('departamentos', DepartamentoController::class)->except(['show', 'edit',]);
+		Route::resource('departamentos', DepartamentoController::class)->except(['show', 'edit',])->middleware('permission:ver departamento');
 });

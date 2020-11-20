@@ -23,11 +23,19 @@
       @yield('content')
     </main>
     <!-- Essential javascripts for application to work-->
+    <script>
+      @auth
+        window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
+      @else
+        window.Permissions = [];
+      @endauth
+    </script>
     <script src="{{asset('js/jquery-3.5.1.js')}}"></script>    
     <script src="{{asset('js/bootstrap.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
     <!-- Page specific javascripts-->
     <script src="{{asset('js/fontawesome.js')}}"></script>
     <script src="{{asset('js/app.js')}}"></script>
+
   </body>
 </html>

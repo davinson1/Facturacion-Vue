@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
         <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" @click="abrirModal">
+        <button type="button" class="btn btn-primary float-right" @click="abrirModal" v-if="can('crear municipio')">
           <i class="fas fa-plus-circle"></i> Registrar municipio
         </button>
         <h3 class="tile-title">Listado de municipios</h3>
@@ -11,7 +11,7 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header bg-primary">
+              <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -20,7 +20,7 @@
               <div class="modal-body">
                 <form>
                   <div class="form-group">
-                    <label for="departamento">Seleccione el departamento</label>
+                    <label for="departamento">Seleccione el departamento</label>                    
                     <select id="departamento" class="form-control select2" v-model="crearMunicipio.idDepartamento">
                       <option v-for="departamento in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}</option>
                     </select>
@@ -56,10 +56,10 @@
                   <td>{{item.id}}</td>
                   <td>{{item.relacion_departamentos.nombre}}</td>
                   <td>{{item.nombre}}</td>
-                  <td>{{item.updated_at}}</td>
+                  <td>{{fecha(item.updated_at)}}</td>
                   <td>
-                    <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" data-toggle="modal" data-target="#exampleModal" type="button"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" type="button" v-if="can('editar municipio')"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button" v-if="can('eliminar municipio')"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -70,9 +70,7 @@
     </div>
   </div>
 </template>
-<script>
-  var id_municipio = ''
-
+<script>  
   export default {
     mounted(){
       this.getMunicipios()
@@ -87,7 +85,8 @@
         crearMunicipio:{idDepartamento:'1',nombre:''},
         tituloModal:'',
         btncrear:true,
-        btnEditar:false
+        btnEditar:false,
+        idMunicipio:''
       }
     },
     methods:{
@@ -96,6 +95,7 @@
         this.btnEditar=false
         this.btncrear=true
         this.crearMunicipio.nombre=''
+        $('#exampleModal').modal('show')
       },
       getMunicipios(){
         axios.get('municipios/create').then(res=>{
@@ -113,20 +113,21 @@
           $('.modal-backdrop').hide()
           swal("Muy bien!", "Municipio creado correctamente", "success")
         }).catch(function (error) {
-          console.log(error.response.data.errors.nombre)
-          swal("Ooohhh vaya!", ""+error.response.data.errors.nombre,"error")
+          var array = Object.values(error.response.data.errors);
+          array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
         });
       },
       editarMunicipio(item){
-        this.tituloModal=' Editar Municipio';
-        this.btnEditar=true;
-        this.btncrear=false;
-        this.crearMunicipio.idDepartamento = item.relacion_departamentos.id;
-        this.crearMunicipio.nombre = item.nombre;
-        id_municipio = item.id;
+        this.tituloModal=' Editar Municipio'
+        this.btnEditar=true
+        this.btncrear=false
+        this.crearMunicipio.idDepartamento = item.relacion_departamentos.id
+        this.crearMunicipio.nombre = item.nombre
+        this.idMunicipio = item.id
+        $('#exampleModal').modal('show')
       },
       editar(){
-        axios.put('municipios/'+id_municipio, this.crearMunicipio).then((res)=>{
+        axios.put('municipios/'+this.idMunicipio, this.crearMunicipio).then((res)=>{
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide()

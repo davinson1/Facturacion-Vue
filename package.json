@@ -24,10 +24,12 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "bootstrap-select": "^1.13.18",
         "datatables.net-bs4": "^1.10.22",
         "datatables.net-buttons-bs4": "^1.6.5",
         "datatables.net-dt": "^1.10.22",
         "jszip": "^3.5.0",
+        "moment": "^2.29.1",
         "pdfmake": "^0.1.68",
         "select2": "^4.0.13",
         "sweetalert": "^2.1.2"
