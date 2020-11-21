@@ -129,7 +129,7 @@
           title: "¿Está seguro de eliminar a "+pais.nombre+"?",
           text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
-          buttons: true,
+          buttons: ["Cancelar", "Eliminar!"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
