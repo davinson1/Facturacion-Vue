@@ -14,7 +14,7 @@
     <div class="col-md-12">
       <div class="tile">
         <div class="tile-body">
-          contenido de todo          
+        contenido de todo
         </div>
       </div>
     </div>
