@@ -22,21 +22,21 @@ class PermisosTablaSeeder extends Seeder
     app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
     // crear permisos pais
-    Permission::create(['name' => 'modulo-ubicacion']);
-    Permission::create(['name' => 'ver pais']);
-    Permission::create(['name' => 'crear pais']);
-    Permission::create(['name' => 'editar pais']);
-    Permission::create(['name' => 'eliminar pais']);
+    Permission::create(['name' => 'modulo-ubicacion', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'ver pais', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'crear pais', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'editar pais', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'eliminar pais', 'categoria' => 'ubicacion']);
     // crear permisos municipio
-    Permission::create(['name' => 'ver municipio']);
-    Permission::create(['name' => 'crear municipio']);
-    Permission::create(['name' => 'editar municipio']);
-    Permission::create(['name' => 'eliminar municipio']);
+    Permission::create(['name' => 'ver municipio', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'crear municipio', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'editar municipio', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'eliminar municipio', 'categoria' => 'ubicacion']);
     // crear permisos departamento
-    Permission::create(['name' => 'ver departamento']);
-    Permission::create(['name' => 'crear departamento']);
-    Permission::create(['name' => 'editar departamento']);
-    Permission::create(['name' => 'eliminar departamento']);
+    Permission::create(['name' => 'ver departamento', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'crear departamento', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'editar departamento', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'eliminar departamento', 'categoria' => 'ubicacion']);
 
     // create roles and assign existing permissions
     $role1 = Role::create(['name' => 'supervisor']);
@@ -50,7 +50,7 @@ class PermisosTablaSeeder extends Seeder
 
     $role2 = Role::create(['name' => 'admin']);
     $role2->givePermissionTo(
-      'modulo-ubicacion'
+      'modulo-ubicacion',
       'ver pais',
       'ver municipio',
       'ver departamento',

@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
         <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" @click="abrirModal" v-if="can('crear municipio')">
+        <button type="button" class="btn btn-primary float-right" @click="abrirModal" v-if="$can('crear municipio')">
           <i class="fas fa-plus-circle"></i> Registrar municipio
         </button>
         <h3 class="tile-title">Listado de municipios</h3>
@@ -56,10 +56,10 @@
                   <td>{{item.id}}</td>
                   <td>{{item.relacion_departamentos.nombre}}</td>
                   <td>{{item.nombre}}</td>
-                  <td>{{fecha(item.updated_at)}}</td>
+                  <td>{{$fecha(item.created_at)}}</td>
                   <td>
-                    <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" type="button" v-if="can('editar municipio')"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button" v-if="can('eliminar municipio')"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" type="button" v-if="$can('editar municipio')"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button" v-if="$can('eliminar municipio')"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>

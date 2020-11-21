@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Usuarios;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Roles;
+use Spatie\Permission\Models\Permission;
 
 class RolController extends Controller
 {
@@ -14,7 +18,7 @@ class RolController extends Controller
      */
     public function index()
     {
-        //
+      return view('usuarios.rol');
     }
 
     /**
@@ -24,7 +28,11 @@ class RolController extends Controller
      */
     public function create()
     {
-        //
+      $roles = Roles::all();
+      $permisos = DB::table('permissions')->select('name','categoria')->groupBy('categoria')->get();
+      var_dump($permisos);
+
+      return compact('roles', 'permisos');
     }
 
     /**
@@ -82,4 +90,4 @@ class RolController extends Controller
     {
         //
     }
-}
+  }

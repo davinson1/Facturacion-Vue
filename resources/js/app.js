@@ -21,18 +21,17 @@ window.JSZip = jszip
 
 window.Vue = require('vue');
 
-Vue.prototype.can = function(permissionName){
+Vue.prototype.$can = function(permissionName){
   return Permissions.indexOf(permissionName) !== -1;
 }
-Vue.prototype.fecha = function(d){
+Vue.prototype.$fecha = function(d){
   return moment(d).lang('es').format('LL');
 }
 
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
-    $('.select2').select2({
-       width: '100%'
-    });
+    $('.select2').select2({width: '100%'});
+    $('#listado-tabla').DataTable().destroy()
     $('#listado-tabla').DataTable({
       language: {
         search: " Buscar ",
@@ -101,6 +100,9 @@ Vue.prototype.$tablaGlobal = function () {
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Componentes de usuarios
+Vue.component('rol-component', require('./components/usuario/RolComponent.vue').default);
+// Componentes de ubicacion
 Vue.component('pais-component', require('./components/ubicacion/PaisComponent.vue').default);
 Vue.component('departamento-component', require('./components/ubicacion/DepartamentoComponent.vue').default);
 Vue.component('municipio-component', require('./components/ubicacion/MunicipioComponent.vue').default);

@@ -24,7 +24,7 @@
           @endcan
           @can('ver rol')
             <li>
-              <a class="treeview-item @yield('active-rol')" href="roles" target="_blank" rel="noopener"><i class="icon fa fa-user-tag"></i> Roles</a>
+              <a class="treeview-item @yield('active-rol')" href="roles"><i class="icon fa fa-user-tag"></i> Roles</a>
             </li>
           @endcan
           @can('ver tipo-documento')

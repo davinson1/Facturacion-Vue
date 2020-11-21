@@ -11731,13 +11731,3 @@ div.dt-buttons a.btn.processing:after {
   border-color: #5897fb;
 }
 
-.modal-backdrop.show {
-  opacity: 0.92 !important;
-}
-
-.modal-backdrop,
-.side-modal,
-.mostrar {
-  display: block !important;
-}
-

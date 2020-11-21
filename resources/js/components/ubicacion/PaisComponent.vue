@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
       <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" @click="abrirModal" v-if="can('crear pais')">
+        <button type="button" class="btn btn-primary float-right" @click="abrirModal" v-if="$can('crear pais')">
           <i class="fas fa-plus-circle"></i> Registrar País
         </button>
         <h3 class="tile-title">Listado de países registrados</h3>
@@ -48,10 +48,10 @@
                 <tr v-for="pais in paises">
                   <td scope="row">{{pais.id}}</td>
                   <td>{{pais.nombre}}</td>
-                  <td>{{fecha(pais.updated_at)}}</td>
+                  <td>{{$fecha(pais.created_at)}}</td>
                   <td>
-                    <button class="btn btn-primary btn-sm" @click="editarPais(pais)" type="button" v-if="can('editar pais')"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" @click="eliminarPais(pais)" type="button" v-if="can('eliminar pais')"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary btn-sm" @click="editarPais(pais)" type="button" v-if="$can('editar pais')"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarPais(pais)" type="button" v-if="$can('eliminar pais')"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>

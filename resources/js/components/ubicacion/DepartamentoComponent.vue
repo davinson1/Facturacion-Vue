@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="tile">
       <!-- Button modal registrar -->
-        <button type="button" class="btn btn-primary float-right" @click="abirimodal" v-if="can('crear departamento')">
+        <button type="button" class="btn btn-primary float-right" @click="abirimodal" v-if="$can('crear departamento')">
           <i class="fas fa-plus-circle"></i> Registrar Departamento
         </button>
         <h3 class="tile-title"> Listado de departamentos</h3>
@@ -56,10 +56,10 @@
 	                <td>{{item.id}}</td>
 	                <td>{{item.pais.nombre}}</td>
 	                <td>{{item.nombre}}</td>
-	                <td>{{fecha(item.updated_at)}}</td>
+	                <td>{{$fecha(item.created_at)}}</td>
 	                <td>
-	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" type="button" v-if="can('editar departamento')"><i class="fas fa-edit"></i></button>
-	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button" v-if="can('eliminar departamento')"><i class="fas fa-trash"></i></button>
+	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" type="button" v-if="$can('editar departamento')"><i class="fas fa-edit"></i></button>
+	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button" v-if="$can('eliminar departamento')"><i class="fas fa-trash"></i></button>
 	                </td>
 	              </tr>
 	            </tbody>
