@@ -30,8 +30,8 @@ class RolController extends Controller
     {
       $roles = Roles::all();
       $permisos = Permission::get();
-      // $permisos = Permission::select('categoria')->groupBy('categoria')->get();
-      return compact('roles', 'permisos');
+      $categorias = Permission::select('categoria')->groupBy('categoria')->get();
+      return compact('roles', 'permisos', 'categorias');
     }
 
     /**

@@ -27,76 +27,41 @@
                     <input id="nombre" class="form-control focus" type="text" placeholder="Escriba el nombre del Rol" v-model="rolCrear.nombre">
                   </div>
                   <h5>Categorías de permisos:</h5>
-                  <div class="card m-0">
+                  <div class="card m-0" v-for="categoria in categorias">
                     <div class="card-header border-0">
                       <div class="row row-cols-2">
                         <div class="col">
-                          <b>Permisos de ubicación:</b>
+                          <b>Permisos de {{categoria.categoria}}:</b>
                         </div>
                         <div class="col">
-                          <a class="float-right" data-toggle="collapse" href="#collapseUbicacion" role="button" aria-expanded="false" aria-controls="collapseExample">
+                          <a class="float-right" data-toggle="collapse" :href="'#collapse-'+categoria.categoria" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <i class="fas fa-plus-circle fa-2x" aria-hidden="true"></i>
                           </a>
                           <div class="toggle-flip float-right mr-2">
                             <label class="toggle-flip float-right m-0">
-                              <input type="checkbox" v-model="selectUbicacionAll"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
+                              <input type="checkbox"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
                             </label>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="collapse" id="collapseUbicacion">
+                    <div class="collapse" :id="'collapse-'+categoria.categoria">
                       <div class="card card-body">
-                        <div class="toggle-flip" v-for="(permi, ubica) in permisos" :key="'permi'+ubica" v-if="permi.categoria === 'ubicación'">
+                        <div class="toggle-flip" v-for="permiso in permisos" v-if="permiso.categoria === categoria.categoria">
                           <div class="row row-cols-2">
                             <div class="col">                              
-                              <p>{{permi.name}}</p>
+                              <p>{{permiso.name}}</p>
                             </div>
                             <div class="col">
                               <label class="toggle-flip float-right m-0">
-                                <input type="checkbox" :value="permi.id" v-model="permisos[ubica].value"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
+                                <input type="checkbox" :value="permiso.id"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
                               </label>                              
                             </div>                            
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="card m-0">
-                    <div class="card-header border-0">
-                      <div class="row row-cols-2">
-                        <div class="col">
-                          <b>Permisos de usuario:</b>
-                        </div>
-                        <div class="col">
-                          <a class="float-right" data-toggle="collapse" href="#collapseUsuario" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus-circle fa-2x" aria-hidden="true"></i>
-                          </a>
-                          <div class="toggle-flip float-right mr-2">
-                            <label class="toggle-flip float-right m-0">
-                              <input type="checkbox" v-model="selectUsuarioAll"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="collapse" id="collapseUsuario">
-                      <div class="card card-body">
-                        <div class="toggle-flip" v-for="(permi, index) in permisos" :key="'permi'+index" v-if="permi.categoria === 'usuario'">
-                          <div class="row row-cols-2">
-                            <div class="col">                              
-                              <p>{{permi.name}}</p>
-                            </div>
-                            <div class="col">
-                              <label class="toggle-flip float-right m-0">
-                                <input type="checkbox" :value="permi.id" v-model="permisos[index].value"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </div>                  
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
                     <button type="submit" @click.prevent="agregar" v-if='btnCrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
@@ -148,30 +113,13 @@
       return {
         roles: [],
         permisos: [],
+        categorias: [],
         rolCrear:{nombre:''},
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
-        idRol:'',
-        selectUsuarioAll: false,
-        selectUbicacionAll: false,
+        idRol:''
       }
-    },
-    watch: {
-      selectUsuarioAll(newValue) {
-        this.permisos.forEach((option, ubica) =>
-          // it's important to use $set to allow Reactivity in Depth
-          // See: https://vuejs.org/v2/guide/reactivity.html
-          this.$set(this.permisos[ubica], "value", newValue)
-        );
-      },
-      selectUbicacionAll(newValue) {
-        this.permisos.forEach((option, index) =>
-          // it's important to use $set to allow Reactivity in Depth
-          // See: https://vuejs.org/v2/guide/reactivity.html
-          this.$set(this.permisos[index], "value", newValue)
-        );
-      },
     },
     methods:{
       modalCrear(){
@@ -185,7 +133,7 @@
        const listar = axios.get('roles/create').then(res=>{
           this.roles = res.data.roles
           this.permisos = res.data.permisos
-          console.log(res.data.permisos)
+          this.categorias = res.data.categorias          
           this.$tablaGlobal()
         });
       },
