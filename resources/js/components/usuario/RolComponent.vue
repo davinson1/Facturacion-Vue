@@ -39,7 +39,7 @@
                           </a>
                           <div class="toggle-flip float-right mr-2">
                             <label class="toggle-flip float-right m-0">
-                              <input type="checkbox" v-model="selectAll" @click="select(categoria.categoria)"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
+                              <input type="checkbox" v-model="selectAll[categoria.categoria]" @click="select(categoria.categoria)"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
                             </label>
                           </div>
                         </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="col">
                               <label class="toggle-flip float-right m-0">
-                                <input type="checkbox" :value="permiso.id" v-model="selected"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
+                                <input type="checkbox" :value="permiso.id" v-model="selected[categoria.categoria]"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
                               </label>
                             </div>
                           </div>
@@ -120,17 +120,20 @@
         btnEditar:false,
         idRol:'',
         selected: [],
-        selectAll: false
+        selectAll: []
       }
     },
     methods:{
       select(catego) {
-        this.selected = [];
-        if (!this.selectAll)
+        this.selected[catego] = [];
+        if (!this.selectAll[catego])
         {
           for (let i in this.permisos)
           {
-            this.selected.push(this.permisos[i].id);
+            if (this.permisos[i].categoria == catego)
+            {
+              this.selected[catego].push(this.permisos[i].id)
+            }
           }          
         }
       },
