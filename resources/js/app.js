@@ -25,7 +25,7 @@ Vue.prototype.$can = function(permissionName){
   return Permissions.indexOf(permissionName) !== -1;
 }
 Vue.prototype.$fecha = function(d){
-  return moment(d).lang('es').format('LL');
+  return moment(d).locale('es').format('LL');
 }
 
 Vue.prototype.$tablaGlobal = function () {

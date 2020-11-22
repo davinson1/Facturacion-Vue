@@ -29,9 +29,8 @@ class RolController extends Controller
     public function create()
     {
       $roles = Roles::all();
-      $permisos = DB::table('permissions')->select('name','categoria')->groupBy('categoria')->get();
-      var_dump($permisos);
-
+      $permisos = Permission::get();
+      // $permisos = Permission::select('categoria')->groupBy('categoria')->get();
       return compact('roles', 'permisos');
     }
 

@@ -22,21 +22,21 @@ class PermisosTablaSeeder extends Seeder
     app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
     // crear permisos pais
-    Permission::create(['name' => 'modulo-ubicacion', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'ver pais', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'crear pais', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'editar pais', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'eliminar pais', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'modulo-ubicacion', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'ver pais', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'crear pais', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'editar pais', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'eliminar pais', 'categoria' => 'ubicación']);
     // crear permisos municipio
-    Permission::create(['name' => 'ver municipio', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'crear municipio', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'editar municipio', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'eliminar municipio', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'ver municipio', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'crear municipio', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'editar municipio', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'eliminar municipio', 'categoria' => 'ubicación']);
     // crear permisos departamento
-    Permission::create(['name' => 'ver departamento', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'crear departamento', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'editar departamento', 'categoria' => 'ubicacion']);
-    Permission::create(['name' => 'eliminar departamento', 'categoria' => 'ubicacion']);
+    Permission::create(['name' => 'ver departamento', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'crear departamento', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'editar departamento', 'categoria' => 'ubicación']);
+    Permission::create(['name' => 'eliminar departamento', 'categoria' => 'ubicación']);
 
     // create roles and assign existing permissions
     $role1 = Role::create(['name' => 'supervisor']);
