@@ -21,12 +21,12 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form >
+                <form>
                   <div class="form-group">
                     <label for="nombre" class="control-label">Nombre del rol (*)</label>
                     <input id="nombre" class="form-control focus" type="text" placeholder="Escriba el nombre del Rol" v-model="rolCrear.nombre">
                   </div>
-                  <h5>Categorías de permisos:</h5>
+                  <h5>Permisos por módulos:</h5>
                   <div class="card m-0" v-for="categoria in categorias">
                     <div class="card-header border-0">
                       <div class="row row-cols-2">
@@ -39,7 +39,7 @@
                           </a>
                           <div class="toggle-flip float-right mr-2">
                             <label class="toggle-flip float-right m-0">
-                              <input type="checkbox"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
+                              <input type="checkbox" v-model="selectAll" @click="select(categoria.categoria)"><span class="flip-indecator" data-toggle-on="Todos" data-toggle-off="No"></span>
                             </label>
                           </div>
                         </div>
@@ -47,21 +47,21 @@
                     </div>
                     <div class="collapse" :id="'collapse-'+categoria.categoria">
                       <div class="card card-body">
-                        <div class="toggle-flip" v-for="permiso in permisos" v-if="permiso.categoria === categoria.categoria">
-                          <div class="row row-cols-2">
-                            <div class="col">                              
+                        <div class="toggle-flip">
+                          <div class="row row-cols-2" v-for="permiso in permisos" v-if="permiso.categoria === categoria.categoria">
+                            <div class="col">
                               <p>{{permiso.name}}</p>
                             </div>
                             <div class="col">
                               <label class="toggle-flip float-right m-0">
-                                <input type="checkbox" :value="permiso.id"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
-                              </label>                              
-                            </div>                            
+                                <input type="checkbox" :value="permiso.id" v-model="selected"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>                  
+                  </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
                     <button type="submit" @click.prevent="agregar" v-if='btnCrear' class="btn btn-primary"><i class="fas fa-save"></i> Crear</button>
@@ -118,10 +118,22 @@
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
-        idRol:''
+        idRol:'',
+        selected: [],
+        selectAll: false
       }
     },
     methods:{
+      select(catego) {
+        this.selected = [];
+        if (!this.selectAll)
+        {
+          for (let i in this.permisos)
+          {
+            this.selected.push(this.permisos[i].id);
+          }          
+        }
+      },
       modalCrear(){
         this.tituloModal=' Crear Rol';
         this.btnEditar=false
@@ -133,7 +145,7 @@
        const listar = axios.get('roles/create').then(res=>{
           this.roles = res.data.roles
           this.permisos = res.data.permisos
-          this.categorias = res.data.categorias          
+          this.categorias = res.data.categorias
           this.$tablaGlobal()
         });
       },
