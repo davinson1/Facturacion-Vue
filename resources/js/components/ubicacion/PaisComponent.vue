@@ -37,7 +37,7 @@
           <div class="table-responsive">
             <table class="table table-hover table-striped" id="listado-tabla">
               <thead>
-                <tr>
+                <tr class="text-center">
                   <th scope="col">#</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Fecha</th>
@@ -49,7 +49,7 @@
                   <td scope="row">{{pais.id}}</td>
                   <td>{{pais.nombre}}</td>
                   <td>{{$fecha(pais.created_at)}}</td>
-                  <td>
+                  <td class="text-center">
                     <button class="btn btn-primary btn-sm" @click="editarPais(pais)" type="button" v-if="$can('editar pais')"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm" @click="eliminarPais(pais)" type="button" v-if="$can('eliminar pais')"><i class="fas fa-trash"></i></button>
                   </td>

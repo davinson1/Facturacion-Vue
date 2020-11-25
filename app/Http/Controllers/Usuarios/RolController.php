@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Roles;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class RolController extends Controller
@@ -28,9 +28,9 @@ class RolController extends Controller
      */
     public function create()
     {
-      $roles = Roles::all();
+      $roles = Role::all();
       $permisos = Permission::get();
-      $categorias = Permission::select('categoria')->groupBy('categoria')->get();
+      $categorias = Permission::select('categoria')->groupBy('categoria')->get();      
       return compact('roles', 'permisos', 'categorias');
     }
 
@@ -42,7 +42,14 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      if($request->ajax())
+      {
+        $data = request()->validate([
+          'nombre' => 'required|min:3|max:100|unique:roles,name|regex:/^[\pL\s\-]+$/u',
+        ]);
+        $role = Role::create(['name' => $request->nombre]);
+        $role->syncPermissions($request->permisos);
+      }
     }
 
     /**
@@ -62,9 +69,9 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Role $role)
+    {      
+      return $role->getAllPermissions();
     }
 
     /**
@@ -74,9 +81,16 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+      if($request->ajax())
+      {
+        $data = request()->validate([
+          'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u|unique:roles,name,'.$role->id,
+        ]);
+        $role->update(['name' => $data['nombre']]);
+        $role->syncPermissions($request->permisos);
+      }
     }
 
     /**
@@ -85,8 +99,8 @@ class RolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+      $role->delete();
     }
   }

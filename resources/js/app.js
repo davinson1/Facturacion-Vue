@@ -30,8 +30,7 @@ Vue.prototype.$fecha = function(d){
 
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
-    $('.select2').select2({width: '100%'});
-    $('#listado-tabla').DataTable().destroy()
+    $('.select2').select2({width: '100%'});       
     $('#listado-tabla').DataTable({
       language: {
         search: " Buscar ",

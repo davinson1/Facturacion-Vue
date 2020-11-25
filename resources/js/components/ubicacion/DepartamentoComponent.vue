@@ -43,7 +43,7 @@
         	<div class="table-responsive">
 	          <table class="table table-hover table-striped" id="listado-tabla">
 	            <thead>
-	              <tr>
+	              <tr class="text-center">
 	                <th>#</th>
 	                <th>País</th>
 	                <th>Nombre Departamento</th>
@@ -57,7 +57,7 @@
 	                <td>{{item.pais.nombre}}</td>
 	                <td>{{item.nombre}}</td>
 	                <td>{{$fecha(item.created_at)}}</td>
-	                <td>
+	                <td class="text-center">
 	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" type="button" v-if="$can('editar departamento')"><i class="fas fa-edit"></i></button>
 	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button" v-if="$can('eliminar departamento')"><i class="fas fa-trash"></i></button>
 	                </td>

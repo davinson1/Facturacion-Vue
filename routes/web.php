@@ -10,7 +10,7 @@ Route::middleware(['auth'])->group(function(){
 		Route::get('/home', 'HomeController@index')->name('home');
 	// Rutas para Usuarios
 		Route::resource('usuarios', 'Usuarios\UsuarioController')->except(['show', 'edit',])->middleware('permission:ver usuario');
-		Route::resource('roles', 'Usuarios\RolController')->except(['show', 'edit',])->middleware('permission:ver rol');
+		Route::resource('roles', 'Usuarios\RolController')->except(['show'])->middleware('permission:ver rol');
 		Route::resource('tipoDocumentos', 'Usuarios\TipoDocumentoController')->except(['show', 'edit',])->middleware('permission:ver tipo-documento');
 		Route::resource('empresa', 'Usuarios\EmpresaController')->except(['show', 'edit',])->middleware('permission:ver empresa');
 	// Rutas para Ubicacion
