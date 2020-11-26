@@ -41,9 +41,9 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-hover table-striped" id="listado-tabla">
+            <table class="table table-hover table-striped text-center" id="listado-tabla">
               <thead>
-                <tr class="text-center">
+                <tr>
                   <th>#</th>
                   <th>Departamento</th>
                   <th>Nombre</th>
@@ -57,7 +57,7 @@
                   <td>{{item.relacion_departamentos.nombre}}</td>
                   <td>{{item.nombre}}</td>
                   <td>{{$fecha(item.created_at)}}</td>
-                  <td class="text-center">
+                  <td>
                     <button class="btn btn-primary btn-sm"  @click="editarMunicipio(item)" type="button" v-if="$can('editar municipio')"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm" @click="eliminarMunicipio(item)" type="button" v-if="$can('eliminar municipio')"><i class="fas fa-trash"></i></button>
                   </td>

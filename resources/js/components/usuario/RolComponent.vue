@@ -3,16 +3,14 @@
     <div class="col-md-12">
       <div class="tile">
       <!-- Button modal registrar -->
-      <!-- v-if="$can('crear rol')" -->
-
-        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg" @click="modalCrear">
+        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg" @click="modalCrear" v-if="$can('crear rol')">
         <i class="fas fa-plus-circle"></i> Registrar rol
         </button>
 
         <h3 class="tile-title">Listado de roles registrados</h3>
         <!-- Modal registrar-->
         <div class="modal fade bd-example-modal-lg" id="modalForm">
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
@@ -26,7 +24,7 @@
                     <label for="nombre" class="control-label">Nombre del rol (*)</label>
                     <input id="nombre" class="form-control focus" type="text" placeholder="Escriba el nombre del Rol" v-model="nombre">
                   </div>
-                  <h5>Permisos por módulos:</h5>                  
+                  <h5>Permisos por módulos:</h5>
                   <!-- Permisos con categorias ensayo -->
                   <div class="card m-0" v-for="categoria in categorias">
                     <div class="card-header border-0">
@@ -55,7 +53,7 @@
                             </div>
                             <div class="col">
                               <label class="toggle-flip float-right m-0">
-                                <input type="checkbox" :value="permiso.id" v-model="seleccionPermisos[permiso.categoria]" @click="updateCheckall(permiso)"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
+                                <input type="checkbox" :value="permiso.id" v-model="seleccionPermisos[permiso.categoria]" @click="marcar(permiso)"><span class="flip-indecator" data-toggle-on="Sí" data-toggle-off="No"></span>
                               </label>
                             </div>
                           </div>
@@ -76,10 +74,10 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-hover table-striped" id="listado-tabla">
+            <table class="table table-hover table-striped text-center" id="listado-tabla">
               <thead>
-                <tr class="text-center">
-                  <th scope="col">Id</th>
+                <tr>
+                  <th scope="col">#</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Acciones</th>
@@ -90,10 +88,9 @@
                   <td scope="row">{{rol.id}}</td>
                   <td>{{rol.name}}</td>
                   <td>{{$fecha(rol.created_at)}}</td>
-                  <td class="text-center">
-                    <!-- v-if="$can('editar rol')" v-if="$can('eliminar rol')"-->
-                    <button class="btn btn-primary btn-sm" @click="modalEditar(rol)" type="button"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm" @click="eliminarRol(rol)" type="button" ><i class="fas fa-trash"></i></button>
+                  <td>
+                    <button class="btn btn-primary btn-sm" @click="modalEditar(rol)" type="button" v-if="$can('editar rol')"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="eliminarRol(rol)" type="button" v-if="$can('eliminar rol')"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -106,8 +103,7 @@
 </template>
 <script>
   export default {
-    mounted(){
-      this.selectAll= [false]
+    mounted(){      
       this.getRol()
       $('#modalForm').on('shown.bs.modal', function (e) {
         $('.focus').focus();
@@ -142,22 +138,11 @@
           }
         }
       },
-      updateCheckall(permiso){
+      marcar(permiso){
         if (this.seleccionPermisos[permiso.categoria] == null)
-        {          
-          this.seleccionPermisos[permiso.categoria] = []          
+        {
+          this.seleccionPermisos[permiso.categoria] = []
         }
-        // for (let p in this.permisos)
-        // {
-        //   if (this.permisos[p].categoria == permiso.categoria)
-        //   {
-        //     if(this.seleccionPermisos[permiso.categoria].length == this.permisos[p].length){
-        //        this.selectAll[permiso.categoria] = true;
-        //     }else{
-        //        this.selectAll[permiso.categoria] = false;
-        //     }            
-        //   }
-        // }
       },
       getRol(){
        const listar = axios.get('roles/create').then(res=>{
@@ -169,6 +154,9 @@
         });
       },
       modalCrear(){
+        for (let c in this.categorias) {
+          $('#collapse-'+this.categorias[c].categoria).collapse('hide')          
+        }
         this.tituloModal=' Crear rol';
         this.btnEditar=false
         this.btnCrear=true
@@ -176,8 +164,9 @@
         $('#modalForm').modal('show')
       },
       modalEditar(rol){
-        $('#collapseUbicacion').collapse('hide')
-        $('#collapseUsuario').collapse('hide')
+        for (let c in this.categorias) {
+          $('#collapse-'+this.categorias[c].categoria).collapse('hide')          
+        }
         axios.get('roles/'+rol.id+'/edit').then((res) =>{
           this.tituloModal=' Editar rol'
           this.btnEditar=true
@@ -187,7 +176,7 @@
           for (let a in this.categorias)
           {
             this.seleccionPermisos[this.categorias[a].categoria] = []
-          }          
+          }
           for (let i in res.data)
           {
             if (res.data[i].categoria == res.data[i].categoria)
@@ -196,13 +185,14 @@
             }
           }
           $('#modalForm').modal('show')
-        }).catch(function (error) {          
+        }).catch(function (error) {
           var array = Object.values(error.response.data.errors)
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"))
-        });        
-      },      
-      agregar(){        
-         var totalSeleccion = this.seleccionFinal.concat(this.seleccionPermisos['ubicación'],this.seleccionPermisos['usuario'])        
+        });
+      },
+      agregar(){
+        var totalSeleccion = this.seleccionFinal.concat(this.seleccionPermisos['ubicación'],this.seleccionPermisos['usuarios'],this.seleccionPermisos['compras'],this.seleccionPermisos['datos-empresa'],this.seleccionPermisos['inicio'],this.seleccionPermisos['productos'])
+        
         axios.post('roles', {'nombre':this.nombre, 'permisos':totalSeleccion}).then((res) =>{          
           this.getRol()
           $('#modalForm').modal('hide')
@@ -214,8 +204,7 @@
         });
       },
       editar(){
-        var totalSeleccionEditada = this.seleccionFinal.concat(this.seleccionPermisos['ubicación'],this.seleccionPermisos['usuario'])
-        console.log(totalSeleccionEditada)
+        var totalSeleccion = this.seleccionFinal.concat(this.seleccionPermisos['ubicación'],this.seleccionPermisos['usuarios'],this.seleccionPermisos['compras'],this.seleccionPermisos['datos-empresa'],this.seleccionPermisos['inicio'],this.seleccionPermisos['productos'])
         axios.put('roles/'+this.idRol,{'nombre':this.nombre, 'permisos':totalSeleccionEditada}).then((res)=>{
           this.idRol=''
           $('#modalForm').modal('hide')

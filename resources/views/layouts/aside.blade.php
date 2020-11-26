@@ -14,7 +14,7 @@
   </div>
   <ul class="app-menu">
     <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Inicio</span></a></li>
-    @can('modulo-usuario')
+    @can('modulo-usuarios')
       <li class="treeview @yield('menu-open-usuarios')"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Usuarios</span><i class="treeview-indicator fa fa-angle-right"></i></a>
         <ul class="treeview-menu">
           @can('ver usuario')
@@ -61,7 +61,7 @@
         </ul>
       </li>
     @endcan
-    @can('modulo-producto')
+    @can('modulo-productos')
       <li class="treeview @yield('menu-open-producto')"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-shopping-cart"></i><span class="app-menu__label">Productos</span><i class="treeview-indicator fa fa-angle-right"></i></a>
         <ul class="treeview-menu">
           @can('ver proveedor')
@@ -112,7 +112,7 @@
         </ul>
       </li>
     @endcan
-    @can('modulo-compra')
+    @can('modulo-compras')
       <li class="treeview @yield('menu-open-compra')"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-money-check-alt"></i><span class="app-menu__label">Compras</span><i class="treeview-indicator fa fa-angle-right"></i></a>
         <ul class="treeview-menu">
           @can('ver tipo-compra')
@@ -138,7 +138,7 @@
         </ul>
       </li>
     @endcan
-    @can('ver dato-empresa')
+    @can('modulo-datos-empresa')
       <li>
         <a class="app-menu__item" href="datoEmpresa"><i class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Datos de empresa</span></a>
       </li>
