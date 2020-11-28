@@ -35,6 +35,12 @@ class PerfilController extends Controller
       $municipios = Municipios::all();
       return compact('usuario', 'roles', 'documentos','municipios');
     }
+    public function store(Request $request)
+    {
+      return $request->imagen;
+      $foto = $request->file('imagen')->store('public/fotosusuarios');
+      exit();
+    }
 
     /**
      * Update the specified resource in storage.
@@ -43,8 +49,13 @@ class PerfilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function update(Request $request, User $perfil)
     {
+      dd($request->imagen);
+      var_dump($request->imagen);
+      return $request->imagen;
+      exit();
       $data = request()->validate([
         'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
         'apellido' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
@@ -55,14 +66,14 @@ class PerfilController extends Controller
         'email' => 'required|email|max:255|unique:users,email,'.$perfil->id,
         'telefono' => 'required|numeric',
       ]);   
-      if (empty($request->contraseña))
+      if (empty($request->contrasenia))
       {        
         $pass = $perfil->password;
       }else{
         $clave = request()->validate([
-          'contraseña' => 'required|string|min:8|confirmed'
+          'contrasenia' => 'required|string|min:8|confirmed'
         ]);
-        $pass = Hash::make($clave['contraseña']);
+        $pass = Hash::make($clave['contrasenia']);
       }
       $perfil->update([
         'name' => $data['nombre'],

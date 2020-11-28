@@ -2,7 +2,8 @@
   <div class="row user w-100 m-0">
     <div class="col-md-12">
       <div class="profile">
-        <div class="info"><img class="user-img" src="http://lorempixel.com/550/430/">
+        <div class="info">          
+          <img class="user-img" :src="imagen">
           <h4>{{this.actualizarUsuario.nombre+' '+this.actualizarUsuario.apellido}}</h4>
           <p v-for="rol in roles">{{rol.name}}</p>
         </div>
@@ -56,7 +57,18 @@
         <div class="tab-pane fade" id="user-editar">
           <div class="tile user-settings">
             <h4 class="line-head">Actualizar perfil</h4>
-            <form>
+            <form enctype="multipart/form-data" @submit.prevent="editar">
+              <div class="row">
+                <div class="col-6 mb-3 mx-auto">
+                  <figure>
+                    <img :src="this.imagenSeleccionada" class="rounded mx-auto d-block" alt="Foto del usuario" width="200" height="200">
+                  </figure>
+                  <div class="custom-file">
+                    <label class="custom-file-label" for="customFileLang">Cambiar foto</label>
+                    <input type="file" class="custom-file-input" id="customFileLang" lang="es" accept="image/png, .jpeg, .jpg, image/gif" @change="obtenerFoto">
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label>Nombres (<span class="text-danger">*</span>)</label>
@@ -96,17 +108,17 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label>Nueva contraseña</label>
-                  <input class="form-control" type="password" placeholder="Nueva contraseña." v-model="actualizarUsuario.contraseña" name="password" required="">
+                  <input class="form-control" type="password" placeholder="Nueva contraseña." v-model="actualizarUsuario.contrasenia" name="password">
                 </div>
                 <div class="col-md-6 mb-3">
                   <label>Confirmar contraseña</label>
-                  <input class="form-control" type="password" name="password_confirmation" placeholder="Confirmar la contraseña." v-model="actualizarUsuario.contraseña_confirmation" required="">
+                  <input class="form-control" type="password" name="password_confirmation" placeholder="Confirmar la contraseña." v-model="actualizarUsuario.contrasenia_confirmation">
                 </div>
                 <!-- <div class="clearfix"></div> No se para que es esto-->
               </div>
               <div class="row mb-10">
                 <div class="col-md-12">
-                  <button class="btn btn-primary" type="submit" @click.prevent="editar"><i class="fa fa-fw fa-lg fa-check-circle"></i> Actualizar</button>
+                  <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i> Actualizar</button>
                 </div>
               </div>
             </form>
@@ -126,17 +138,23 @@
     },
     data() {
       return {
+        imagenSeleccionada:'',
         datosUsuario: [],
         tipoDocumento: [],
         municipio: [],
         roles:[],
         tiposDocumentos: [],
         municipios: [],
-        actualizarUsuario:{nombre:'',apellido:'',tipo_documento:'',numero_documento:'',municipio:'',direccion:'',email:'',telefono:'',contraseña:'',contraseña_confirmation:''},
+        actualizarUsuario:{nombre:'',apellido:'',tipo_documento:'',numero_documento:'',municipio:'',direccion:'',email:'',foto:'',telefono:'',contrasenia:'',contrasenia_confirmation:''},
         idUsuario:''
       }
     },
-    methods:{      
+    computed:{
+      imagen(){
+        return this.imagenSeleccionada
+      }
+    },
+    methods:{
       getUsuarioDatos(){
        axios.get('perfil/create').then(res=>{          
           this.datosUsuario = res.data.usuario[0]
@@ -158,12 +176,34 @@
           this.actualizarUsuario.telefono = this.datosUsuario.telefono
         });
       },
+      obtenerFoto(img){
+        let file = img.target.files[0]
+        this.actualizarUsuario.foto = file
+        let reader = new FileReader()
+        reader.onload = (e) => {
+          this.imagenSeleccionada = e.target.result
+        }
+        reader.readAsDataURL(file)
+      },
       editar(){
-        axios.put('perfil/'+this.idUsuario,this.actualizarUsuario).then((res)=>{
-          this.actualizarUsuario.password = ''
-          this.actualizarUsuario.password_confirmation = ''
-          this.getUsuarioDatos()
-          swal("Muy bien!", "Perfil de usuario editado correctamente.", "success")
+        let form = new FormData()
+        form.append('nombre',this.actualizarUsuario.nombre)
+        form.append('apellido',this.actualizarUsuario.apellido)
+        form.append('tipo_documento',this.actualizarUsuario.tipo_documento)
+        form.append('numero_documento',this.actualizarUsuario.numero_documento)
+        form.append('municipio',this.actualizarUsuario.municipio)
+        form.append('direccion',this.actualizarUsuario.direccion)
+        form.append('email',this.actualizarUsuario.email)
+        form.append('imagen',this.actualizarUsuario.foto)
+        form.append('telefono',this.actualizarUsuario.telefono)
+        form.append('contrasenia',this.actualizarUsuario.contrasenia)
+
+        axios.post('perfil',form).then((res)=>{
+          console.log(res.data)          
+          // this.actualizarUsuario.password = ''
+          // this.actualizarUsuario.password_confirmation = ''
+          // this.getUsuarioDatos()
+          // swal("Muy bien!", "Perfil de usuario editado correctamente.", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
