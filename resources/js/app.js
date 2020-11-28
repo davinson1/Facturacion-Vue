@@ -101,6 +101,7 @@ Vue.prototype.$tablaGlobal = function () {
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Componentes de usuarios
 Vue.component('rol-component', require('./components/usuario/RolComponent.vue').default);
+Vue.component('perfil-component', require('./components/usuario/PerfilComponent.vue').default);
 // Componentes de ubicacion
 Vue.component('pais-component', require('./components/ubicacion/PaisComponent.vue').default);
 Vue.component('departamento-component', require('./components/ubicacion/DepartamentoComponent.vue').default);

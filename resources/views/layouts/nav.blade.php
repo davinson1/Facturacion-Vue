@@ -7,10 +7,10 @@
       <button class="app-search__button"><i class="fa fa-search"></i></button>
     </li>
     <!-- User Menu-->
-    <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+    <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Abrir menú del perfil."><i class="fa fa-user fa-lg"></i></a>
       <ul class="dropdown-menu settings-menu dropdown-menu-right">
         <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-        <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+        <li><a class="dropdown-item" href="perfil"><i class="fas fa-id-badge fa-lg"></i> Perfil</a></li>
         <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
           <i class="fa fa-sign-out fa-lg"></i>{{ __('Salir') }} </a>

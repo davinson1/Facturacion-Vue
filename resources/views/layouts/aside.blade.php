@@ -15,7 +15,7 @@
   <ul class="app-menu">
     <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Inicio</span></a></li>
     @can('modulo-usuarios')
-      <li class="treeview @yield('menu-open-usuarios')"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Usuarios</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+      <li class="treeview @yield('menu-open-usuarios')"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Usuarios</span><i class="treeview-indicator fa fa-angle-right"></i></a>
         <ul class="treeview-menu">
           @can('ver usuario')
             <li>

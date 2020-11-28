@@ -28,6 +28,7 @@ class User extends Authenticatable
       'apellido',
       'numero_documento',
       'direccion',
+      'telefono',
       'email',
       'foto',
       'copia_documento',
