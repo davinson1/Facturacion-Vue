@@ -84,7 +84,7 @@ Vue.prototype.$tablaGlobal = function () {
       "iDisplayLength": 10,
       "order": [[0,"desc"]]
     });
-  }); 
+  });
 }
 
 /**
@@ -101,7 +101,12 @@ Vue.prototype.$tablaGlobal = function () {
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Componentes de usuarios
 Vue.component('rol-component', require('./components/usuario/RolComponent.vue').default);
+<<<<<<< HEAD
 Vue.component('perfil-component', require('./components/usuario/PerfilComponent.vue').default);
+=======
+Vue.component('tipodocumento-component', require('./components/usuario/TipoDocumentoComponent.vue').default);
+Vue.component('usuarios-component', require('./components/usuario/UsuariosComponent.vue').default);
+>>>>>>> e09f6eea7caa3da34a094460f5159e4b461632ee
 // Componentes de ubicacion
 Vue.component('pais-component', require('./components/ubicacion/PaisComponent.vue').default);
 Vue.component('departamento-component', require('./components/ubicacion/DepartamentoComponent.vue').default);
