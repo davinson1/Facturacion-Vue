@@ -9,14 +9,14 @@ Route::middleware(['auth'])->group(function(){
 	// Ruta de home
 		Route::get('/home', 'HomeController@index')->name('home');
 	// Rutas para Usuarios
-		Route::resource('usuarios', 'Usuarios\UsuarioController')->except(['show', 'edit', 'store', 'destroy'])->middleware(['auth']);
+		Route::resource('usuarios', 'Usuarios\UsuarioController')->except(['show', 'edit', 'destroy'])->middleware(['auth']);
 		Route::resource('perfil', 'Usuarios\PerfilController')->except(['show', 'edit',])->middleware('permission:ver usuario');
 		Route::resource('roles', 'Usuarios\RolController')->except(['show'])->middleware('permission:ver rol');
 		Route::resource('tipoDocumentos', 'Usuarios\TipoDocumentoController')->except(['show', 'edit',])->middleware('permission:ver tipo-documento');
 		Route::resource('empresa', 'Usuarios\EmpresaController')->except(['show', 'edit',])->middleware('permission:ver empresa');
 	// Rutas para Ubicacion
 		Route::resource('paises', 'Ubicacion\PaisController')->except(['show', 'edit',])->middleware('permission:ver pais');
-		Route::resource('municipios', 'Ubicacion\MunicipiosController')->except(['show', 'edit',])->middleware('permission:ver municipio');  
+		Route::resource('municipios', 'Ubicacion\MunicipiosController')->except(['show', 'edit',])->middleware('permission:ver municipio');
 		Route::resource('departamentos', 'Ubicacion\DepartamentoController')->except(['show', 'edit',])->middleware('permission:ver departamento');
 	// Rutas para Productos
 		Route::resource('proveedores', 'Productos\ProveedorController')->except(['show', 'edit',])->middleware('permission:ver proveedor');
