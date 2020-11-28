@@ -16,11 +16,7 @@ Route::middleware(['auth'])->group(function(){
 		Route::resource('empresa', 'Usuarios\EmpresaController')->except(['show', 'edit',])->middleware('permission:ver empresa');
 	// Rutas para Ubicacion
 		Route::resource('paises', 'Ubicacion\PaisController')->except(['show', 'edit',])->middleware('permission:ver pais');
-<<<<<<< HEAD
 		Route::resource('municipios', 'Ubicacion\MunicipiosController')->except(['show', 'edit',])->middleware('permission:ver municipio');  
-=======
-		Route::resource('municipios', 'Ubicacion\MunicipiosController')->except(['show', 'edit',])->middleware('permission:ver municipio');
->>>>>>> e09f6eea7caa3da34a094460f5159e4b461632ee
 		Route::resource('departamentos', 'Ubicacion\DepartamentoController')->except(['show', 'edit',])->middleware('permission:ver departamento');
 	// Rutas para Productos
 		Route::resource('proveedores', 'Productos\ProveedorController')->except(['show', 'edit',])->middleware('permission:ver proveedor');
