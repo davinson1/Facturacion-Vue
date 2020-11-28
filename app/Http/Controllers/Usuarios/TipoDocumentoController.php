@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Usuarios;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\TipoDocumento;
 
 class TipoDocumentoController extends Controller
 {
@@ -14,7 +15,7 @@ class TipoDocumentoController extends Controller
      */
     public function index()
     {
-        //
+        return view('usuarios.tipo_documento');
     }
 
     /**
@@ -24,7 +25,8 @@ class TipoDocumentoController extends Controller
      */
     public function create()
     {
-        //
+      return TipoDocumento::all();
+
     }
 
     /**
@@ -35,7 +37,16 @@ class TipoDocumentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+    if($request->ajax())
+    {
+      $data = request()->validate([
+        'nombre' => 'required|min:3|max:100|unique:tipo_documento,nombre|regex:/^[\pL\s\-]+$/u',
+      ]);
+      $tipoDocumento = new TipoDocumento();
+      $tipoDocumento->nombre = $request->nombre;
+      $tipoDocumento->save();
+    }
     }
 
     /**
@@ -67,9 +78,16 @@ class TipoDocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, TipoDocumento $tipoDocumento)
     {
-        //
+      if($request->ajax())
+      {
+        $data = request()->validate([
+          'nombre' => 'required|min:3|max:100|unique:tipo_documento,nombre,'.$tipoDocumento->id,
+        ]);
+
+        $tipoDocumento->update($data);
+      }
     }
 
     /**
@@ -78,8 +96,8 @@ class TipoDocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TipoDocumento $tipoDocumento)
     {
-        //
+      $tipoDocumento->delete();
     }
 }

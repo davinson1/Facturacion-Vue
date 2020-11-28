@@ -4,6 +4,19 @@ namespace App\Http\Controllers\Usuarios;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
+use App\Models\TipoDocumento;
+use App\Models\Municipios;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UsuariosRequest;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+
+
+
+
+
 
 class UsuarioController extends Controller
 {
@@ -14,7 +27,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        return view('usuarios.usuarios');
     }
 
     /**
@@ -24,7 +37,13 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //
+
+      $usuarios = User::with('tipoDocumento')->get();
+      $tiposDocumentos = TipoDocumento::all();
+      $municipios = Municipios::all();
+      $roles = Role::all();
+      return compact('usuarios', 'tiposDocumentos','municipios','roles');
+
     }
 
     /**
@@ -33,9 +52,48 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsuariosRequest $request)
     {
-        //
+
+      if ($request->foto==null) {
+        $foto = '';
+      }else{
+        $foto = $request->file('foto')->store('public/fotosusuarios');
+      }
+
+      if ($request->copiaDocumento==null) {
+        $documento = '';
+      }else{
+        $documento = $request->file('copiaDocumento')->store('public/documentosusuarios');
+      }
+
+      $user = new User();
+      $user->id_tipo_documento = $request->idTipoDocumento;
+      $user->id_municipio = $request->idMunicipio;
+      $user->name = $request->nombre;
+      $user->apellido = $request->apellido;
+      $user->numero_documento = $request->documento;
+      $user->direccion = $request->direccion;
+      $user->email = $request->email;
+      $user->foto = $foto;
+      $user->copia_documento = $documento;
+      $user->password = Hash::make($request->contrasena);
+      // $usuario->remember_token = $token;
+      $user->activo = '1';
+      $user->save();
+      $user->assignRole(['1','2']);
+
+      // $usuario->roles()->sync($request->get('roles'));
+      // $usuario->assignRole([$request->get('rol')]);
+      // $usuario->syncRoles($request->rol);
+      // $usuario->rol()->asyncRoles($request->get('rol'));
+        // $usuario->asyncRoles($request->rol);
+        // $usuario->syncRoles([$request->rol]);
+        // $rol = Role::create([$request->rol]);
+
+
+
+
     }
 
     /**

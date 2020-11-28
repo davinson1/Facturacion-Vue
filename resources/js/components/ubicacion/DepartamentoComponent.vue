@@ -151,7 +151,7 @@
           	axios.delete('departamentos/'+item.id).then((res)=>{
 	            this.getDepartamentos()
 	            swal("Eliminado", "País "+item.nombre+" eliminado correctamente.", "success");
-		        }).catch(function (error) {		          
+		        }).catch(function (error) {
 		          swal("Ooohhh vaya!","No se pudo eliminar el departamento, ya está asociado a un municipio.", "error");
 		        });
 	        }
