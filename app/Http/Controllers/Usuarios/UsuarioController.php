@@ -81,18 +81,7 @@ class UsuarioController extends Controller
       // $usuario->remember_token = $token;
       $user->activo = '1';
       $user->save();
-      $user->assignRole(['1','2']);
-
-      // $usuario->roles()->sync($request->get('roles'));
-      // $usuario->assignRole([$request->get('rol')]);
-      // $usuario->syncRoles($request->rol);
-      // $usuario->rol()->asyncRoles($request->get('rol'));
-        // $usuario->asyncRoles($request->rol);
-        // $usuario->syncRoles([$request->rol]);
-        // $rol = Role::create([$request->rol]);
-
-
-
+      $user->assignRole(explode(',',$request->rol));
 
     }
 

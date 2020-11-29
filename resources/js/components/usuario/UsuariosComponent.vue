@@ -88,7 +88,7 @@
 
                     <h5>Roles:</h5>
                       <label v-for="rol in roles">
-                        <input type="checkbox" @change="rolesu" v-model="crearusuarios.rol">
+                        <input type="checkbox" v-model="arrayRoles" :value="rol.id">
                         <span class="label-text">{{rol.name}}</span>
                       </label>
 
@@ -156,7 +156,8 @@
         municipios: [],
         roles:[],
         crearusuarios:{idtipoDocumento:'1',idMunicipio:'1',nombre:'',apellido:'',
-        documento:'',direccion:'',email:'',foto:'',copiaDocumento:'',contrasena:'',rol:[]},
+        documento:'',direccion:'',email:'',foto:'',copiasDocumento:'',contrasena:''},
+        arrayRoles:[],
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
@@ -169,10 +170,6 @@
           this.crearusuarios.foto = foto;
           console.log(foto)
       },
-      rolesu(e){
-        let rol = this.crearusuarios.rol = rol
-        console.log(rol)
-      },
       documentoUsuario(e){
           let documento = e.target.files[0]
           this.crearusuarios.copiasDocumento = documento;
@@ -184,7 +181,7 @@
         this.btnCrear=true
         this.crearusuarios.nombre=''
         $('#exampleModal').modal('show')
-        console.log(this.crearusuarios.rol)
+        console.log(this.arrayRoles)
       },
       getUsuarios(){
        axios.get('usuarios/create').then(res=>{
@@ -205,11 +202,11 @@
         formData.append('documento',this.crearusuarios.documento)
         formData.append('direccion',this.crearusuarios.direccion)
         formData.append('email',this.crearusuarios.email)
-        let foto = formData.append('foto',this.crearusuarios.foto)
-        formData.append('copiaDocumento',this.crearusuarios.copiaDocumento)
+        formData.append('foto',this.crearusuarios.foto)
+        formData.append('copiaDocumento',this.crearusuarios.copiasDocumento)
         formData.append('contrasena',this.crearusuarios.contrasena)
-        formData.append('rol',this.crearusuarios.rol)
-        axios.post('usuarios', formData).then((res) =>{
+        formData.append('rol',this.arrayRoles)
+        axios.post('usuarios',formData).then((res) =>{
           this.getUsuarios()
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')

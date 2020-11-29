@@ -1,8 +1,8 @@
-<template>  
+<template>
   <div class="row user w-100 m-0">
     <div class="col-md-12">
       <div class="profile">
-        <div class="info">          
+        <div class="info">
           <img class="user-img" :src="this.imagenSeleccionada">
           <h4>{{this.actualizarUsuario.nombre+' '+this.actualizarUsuario.apellido}}</h4>
           <p v-for="rol in roles">{{rol.name}}</p>
@@ -21,7 +21,7 @@
     <div class="col-md-9">
       <div class="tab-content">
         <div class="tab-pane active" id="user-datos">
-          <div class="timeline-post">              
+          <div class="timeline-post">
             <div class="post-content">
               <table class="table">
                 <tbody>
@@ -43,7 +43,7 @@
                   </tr>
                   <tr>
                     <th scope="row">E-Mail</th>
-                    <td>{{this.datosUsuario.email}}</td>                  
+                    <td>{{this.datosUsuario.email}}</td>
                   </tr>
                   <tr>
                     <th scope="row">Fecha de creación</th>
@@ -77,7 +77,7 @@
                   <input class="form-control" type="text" v-model="actualizarUsuario.apellido" required="">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label>Tipo de documento (<span class="text-danger">*</span>)</label>                    
+                  <label>Tipo de documento (<span class="text-danger">*</span>)</label>
                   <select class="form-control select2" v-model="actualizarUsuario.tipo_documento" required="">
                     <option v-for="tip_doc in tiposDocumentos" v-bind:value="tip_doc.id">{{tip_doc.nombre}}</option>
                   </select>
@@ -87,7 +87,7 @@
                   <input class="form-control" type="text" v-model="actualizarUsuario.numero_documento" required="">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label>Municipio (<span class="text-danger">*</span>)</label>                    
+                  <label>Municipio (<span class="text-danger">*</span>)</label>
                   <select class="form-control select2" v-model="actualizarUsuario.municipio" required="">
                     <option v-for="muni in municipios" v-bind:value="muni.id">{{muni.nombre}}</option>
                   </select>
@@ -95,11 +95,11 @@
                 <div class="col-md-6 mb-3">
                   <label>Dirección (<span class="text-danger">*</span>)</label>
                   <input class="form-control" type="text" v-model="actualizarUsuario.direccion" required="">
-                </div>                  
+                </div>
                 <div class="col-md-6 mb-3">
                   <label>E-Mail (<span class="text-danger">*</span>)</label>
                   <input class="form-control" type="email" v-model="actualizarUsuario.email" required="">
-                </div>                  
+                </div>
                 <div class="col-md-6 mb-3">
                   <label>Teléfono (<span class="text-danger">*</span>)</label>
                   <input class="form-control" type="text" v-model="actualizarUsuario.telefono" required="">
@@ -149,7 +149,7 @@
     },
     methods:{
       getUsuarioDatos(){
-       axios.get('perfil/create').then(res=>{          
+       axios.get('perfil/create').then(res=>{
           this.datosUsuario = res.data.usuario[0]
           this.tipoDocumento = res.data.usuario[0].tipo_documento
           this.municipio = res.data.usuario[0].municipio
@@ -192,7 +192,6 @@
         formData.append('imagen',this.actualizarUsuario.foto)
         formData.append('telefono',this.actualizarUsuario.telefono)
         formData.append('contrasenia',this.actualizarUsuario.contrasenia)
-
         axios.post('perfil/'+this.idUsuario,formData).then((res)=>{
           this.actualizarUsuario.password = ''
           this.actualizarUsuario.password_confirmation = ''
@@ -206,4 +205,3 @@
     }
   }
 </script>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

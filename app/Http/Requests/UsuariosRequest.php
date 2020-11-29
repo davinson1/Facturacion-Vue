@@ -28,11 +28,22 @@ class UsuariosRequest extends FormRequest
           'idMunicipio'         => 'required',
           'nombre'    => 'required|min:3|max:100',
           'apellido'  => 'required|min:3|max:100',
-          'documento' => 'required|min:6|unique:users,numero_documento|numeric',
+          'documento' => 'required|unique:users,numero_documento|numeric|min:100000|max:9999999999',
           'email'     => 'required|unique:users,email',
           'foto'       => 'image|nullable',
-          'copiaDocumento'    => 'mimes:pdf|nullable',
-          'contrasena'     => 'required|min:8|string'
+          'copiaDocumento'    => 'nullable',
+          'contrasena'     => 'required|min:8|string',
+          'rol'           => 'required'
+
         ];
+
     }
+
+    public function messages()
+{
+    return [
+        'documento.max' => 'EL campo debe contener entre 6 a 10 números',
+
+    ];
+  }
 }
