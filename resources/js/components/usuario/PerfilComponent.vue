@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="profile">
         <div class="info">          
-          <img class="user-img" :src="imagen">
+          <img class="user-img" :src="this.imagenSeleccionada">
           <h4>{{this.actualizarUsuario.nombre+' '+this.actualizarUsuario.apellido}}</h4>
           <p v-for="rol in roles">{{rol.name}}</p>
         </div>
@@ -57,12 +57,10 @@
         <div class="tab-pane fade" id="user-editar">
           <div class="tile user-settings">
             <h4 class="line-head">Actualizar perfil</h4>
-            <form enctype="multipart/form-data" @submit.prevent="editar">
+            <form @submit.prevent="editar" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-6 mb-3 mx-auto">
-                  <figure>
-                    <img :src="this.imagenSeleccionada" class="rounded mx-auto d-block" alt="Foto del usuario" width="200" height="200">
-                  </figure>
+                  <img :src="this.imagenSeleccionada" class="rounded mx-auto d-block" alt="Foto del usuario" height="200">
                   <div class="custom-file">
                     <label class="custom-file-label" for="customFileLang">Cambiar foto</label>
                     <input type="file" class="custom-file-input" id="customFileLang" lang="es" accept="image/png, .jpeg, .jpg, image/gif" @change="obtenerFoto">
@@ -149,11 +147,6 @@
         idUsuario:''
       }
     },
-    computed:{
-      imagen(){
-        return this.imagenSeleccionada
-      }
-    },
     methods:{
       getUsuarioDatos(){
        axios.get('perfil/create').then(res=>{          
@@ -173,6 +166,7 @@
           this.actualizarUsuario.municipio = this.datosUsuario.id_municipio
           this.actualizarUsuario.direccion = this.datosUsuario.direccion
           this.actualizarUsuario.email = this.datosUsuario.email
+          this.imagenSeleccionada = this.datosUsuario.foto
           this.actualizarUsuario.telefono = this.datosUsuario.telefono
         });
       },
@@ -186,24 +180,24 @@
         reader.readAsDataURL(file)
       },
       editar(){
-        let form = new FormData()
-        form.append('nombre',this.actualizarUsuario.nombre)
-        form.append('apellido',this.actualizarUsuario.apellido)
-        form.append('tipo_documento',this.actualizarUsuario.tipo_documento)
-        form.append('numero_documento',this.actualizarUsuario.numero_documento)
-        form.append('municipio',this.actualizarUsuario.municipio)
-        form.append('direccion',this.actualizarUsuario.direccion)
-        form.append('email',this.actualizarUsuario.email)
-        form.append('imagen',this.actualizarUsuario.foto)
-        form.append('telefono',this.actualizarUsuario.telefono)
-        form.append('contrasenia',this.actualizarUsuario.contrasenia)
+        let formData = new FormData();
+        formData.append('_method', 'PUT')
+        formData.append('nombre',this.actualizarUsuario.nombre)
+        formData.append('apellido',this.actualizarUsuario.apellido)
+        formData.append('tipo_documento',this.actualizarUsuario.tipo_documento)
+        formData.append('numero_documento',this.actualizarUsuario.numero_documento)
+        formData.append('municipio',this.actualizarUsuario.municipio)
+        formData.append('direccion',this.actualizarUsuario.direccion)
+        formData.append('email',this.actualizarUsuario.email)
+        formData.append('imagen',this.actualizarUsuario.foto)
+        formData.append('telefono',this.actualizarUsuario.telefono)
+        formData.append('contrasenia',this.actualizarUsuario.contrasenia)
 
-        axios.post('perfil',form).then((res)=>{
-          console.log(res.data)          
-          // this.actualizarUsuario.password = ''
-          // this.actualizarUsuario.password_confirmation = ''
-          // this.getUsuarioDatos()
-          // swal("Muy bien!", "Perfil de usuario editado correctamente.", "success")
+        axios.post('perfil/'+this.idUsuario,formData).then((res)=>{
+          this.actualizarUsuario.password = ''
+          this.actualizarUsuario.password_confirmation = ''
+          this.getUsuarioDatos()
+          swal("Muy bien!", "Perfil de usuario editado correctamente.", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));

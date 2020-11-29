@@ -35,13 +35,6 @@ class PerfilController extends Controller
       $municipios = Municipios::all();
       return compact('usuario', 'roles', 'documentos','municipios');
     }
-    public function store(Request $request)
-    {
-      return $request->imagen;
-      $foto = $request->file('imagen')->store('public/fotosusuarios');
-      exit();
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -52,10 +45,6 @@ class PerfilController extends Controller
     
     public function update(Request $request, User $perfil)
     {
-      dd($request->imagen);
-      var_dump($request->imagen);
-      return $request->imagen;
-      exit();
       $data = request()->validate([
         'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
         'apellido' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
@@ -64,16 +53,25 @@ class PerfilController extends Controller
         'municipio' => 'required|numeric',
         'direccion' => 'required|string',
         'email' => 'required|email|max:255|unique:users,email,'.$perfil->id,
+        'imagen' => 'image|nullable',
         'telefono' => 'required|numeric',
-      ]);   
+        'contrasenia' => 'nullable|string|min:8|confirmed'
+      ]);      
       if (empty($request->contrasenia))
-      {        
+      {
         $pass = $perfil->password;
       }else{
-        $clave = request()->validate([
-          'contrasenia' => 'required|string|min:8|confirmed'
-        ]);
-        $pass = Hash::make($clave['contrasenia']);
+        $pass = Hash::make($data['contrasenia']);
+      }
+      // Si el usuario cambia la foto
+      if($request->hasFile('imagen')){
+        // aquí compruebo que exista la foto anterior
+        if (\Storage::exists($perfil->foto))
+        {
+           // aquí la borro
+           \Storage::delete($perfil->foto);
+        }
+        $fotoPerfil=\Storage::putFile('public/fotosusuarios', $request->file('imagen'));      
       }
       $perfil->update([
         'name' => $data['nombre'],
@@ -83,8 +81,9 @@ class PerfilController extends Controller
         'id_municipio' => $data['municipio'],
         'direccion' => $data['direccion'],
         'email' => $data['email'],
+        'foto' => str_replace("public/","storage/",$fotoPerfil),
         'telefono' => $data['telefono'],
-        'password' => $pass,
+        'password' => $pass
       ]);
     }
   }

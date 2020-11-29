@@ -1,8 +1,12 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-  <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="#" alt="User Image">
-    <div>
-      <p class="app-sidebar__user-name" > {{ Auth::user()->name }} {{ Auth::user()->apellido }}</p>
+  <div class="app-sidebar__user mb-0">
+    <div class="mr-2">
+      <img class="rounded-circle" width="70px" height="70px" src="{{ Auth::user()->foto }}" alt="User Image">
+    </div>
+    <div class="text-truncate">
+      <p class="app-sidebar__user-name">{{ Auth::user()->name }}</p>
+      <p class="app-sidebar__user-name">{{ Auth::user()->apellido }}</p>
       <p class="app-sidebar__user-designation">
         @if ($roless = auth()->user()->roles)
           @foreach ($roless as $rol)
