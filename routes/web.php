@@ -9,11 +9,13 @@ Route::middleware(['auth'])->group(function(){
 	// Ruta de home
 		Route::get('/home', 'HomeController@index')->name('home');
 	// Rutas para Usuarios
-		Route::resource('usuarios', 'Usuarios\UsuarioController')->except(['show', 'edit'])->middleware(['permission:ver usuario']);
+		Route::resource('usuarios', 'Usuarios\UsuarioController')->except(['show','edit'])->middleware(['permission:ver usuario']);
 		Route::resource('perfil', 'Usuarios\PerfilController')->except(['show', 'edit', 'store', 'destroy']);
 		Route::resource('roles', 'Usuarios\RolController')->except(['show'])->middleware('permission:ver rol');
 		Route::resource('tipoDocumentos', 'Usuarios\TipoDocumentoController')->except(['show', 'edit',])->middleware('permission:ver tipo-documento');
-		Route::resource('empresa', 'Usuarios\EmpresaController')->except(['show', 'edit',])->middleware('permission:ver empresa');
+    Route::resource('empresa', 'Usuarios\EmpresaController')->except(['show', 'edit',])->middleware('permission:ver empresa');
+    Route::get('/getRoles', 'Usuarios\UsuarioController@edit')->name('getRoles');
+
 	// Rutas para Ubicacion
 		Route::resource('paises', 'Ubicacion\PaisController')->except(['show', 'edit',])->middleware('permission:ver pais');
 		Route::resource('municipios', 'Ubicacion\MunicipiosController')->except(['show', 'edit',])->middleware('permission:ver municipio');

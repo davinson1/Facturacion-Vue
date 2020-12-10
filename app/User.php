@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
@@ -43,7 +44,7 @@ class User extends Authenticatable
     public function municipio() {
       return $this->belongsTo(Models\Municipios::class, 'id_municipio');
     }
-    
+
     public function getAllPermissionsAttribute() {
       $permissions = [];
         foreach (Permission::all() as $permission) {

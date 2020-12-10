@@ -29,11 +29,10 @@ class UsuariosRequest extends FormRequest
           'nombre'    => 'required|min:3|max:100',
           'apellido'  => 'required|min:3|max:100',
           'documento' => 'required|unique:users,numero_documento|numeric|min:100000|max:9999999999',
-          'email'     => 'required|unique:users,email',
+          'email'     => 'required|unique:users,email,'.'idUsuario',
           'foto'       => 'image|nullable',
-          'copiaDocumento'    => 'nullable',
-          'contrasena'     => 'required|min:8|string',
-          'rol'           => 'required'
+          'copiaDocumento'    => 'nullable|max:3000',
+          'rol'           => 'required',
 
         ];
 
@@ -42,7 +41,8 @@ class UsuariosRequest extends FormRequest
     public function messages()
 {
     return [
-        'documento.max' => 'EL campo debe contener entre 6 a 10 números',
+        'documento.max' => 'El campo Número de Documento debe contener entre 6 a 10 números',
+        'documento.min' => 'El campo Número de Documento debe contener entre 6 a 10 números',
 
     ];
   }

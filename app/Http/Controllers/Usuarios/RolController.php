@@ -30,7 +30,7 @@ class RolController extends Controller
     {
       $roles = Role::all();
       $permisos = Permission::get();
-      $categorias = Permission::select('categoria')->groupBy('categoria')->get();      
+      $categorias = Permission::select('categoria')->groupBy('categoria')->get();
       return compact('roles', 'permisos', 'categorias');
     }
 
@@ -70,7 +70,7 @@ class RolController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Role $role)
-    {      
+    {
       return $role->getAllPermissions();
     }
 
