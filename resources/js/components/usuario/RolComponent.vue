@@ -13,7 +13,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
+                <h5 class="modal-title"><i :class="icono" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -115,6 +115,7 @@
         permisos: [],
         categorias: [],
         nombre:'',
+        icono:'',
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
@@ -157,7 +158,8 @@
         for (let c in this.categorias) {
           $('#collapse-'+this.categorias[c].categoria).collapse('hide')          
         }
-        this.tituloModal=' Crear rol';
+        this.icono='fas fa-plus-circle fa-lg'
+        this.tituloModal=' Crear rol'
         this.btnEditar=false
         this.btnCrear=true
         this.nombre=''
@@ -168,6 +170,7 @@
           $('#collapse-'+this.categorias[c].categoria).collapse('hide')          
         }
         axios.get('roles/'+rol.id+'/edit').then((res) =>{
+          this.icono='fas fa-edit fa-lg'
           this.tituloModal=' Editar rol'
           this.btnEditar=true
           this.btnCrear=false

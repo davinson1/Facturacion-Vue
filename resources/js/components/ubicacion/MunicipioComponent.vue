@@ -12,7 +12,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i :class="icono" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -83,6 +83,7 @@
         municipios: [],
         departamentos: [],
         crearMunicipio:{idDepartamento:'1',nombre:''},
+        icono:'',
         tituloModal:'',
         btncrear:true,
         btnEditar:false,
@@ -91,6 +92,7 @@
     },
     methods:{
       abrirModal(){
+        this.icono='fas fa-plus-circle fa-lg'
         this.tituloModal=' Crear Municipio'
         this.btnEditar=false
         this.btncrear=true
@@ -118,6 +120,7 @@
         });
       },
       editarMunicipio(item){
+        this.icono='fas fa-edit fa-lg'
         this.tituloModal=' Editar Municipio'
         this.btnEditar=true
         this.btncrear=false
@@ -129,9 +132,8 @@
       editar(){
         axios.put('municipios/'+this.idMunicipio, this.crearMunicipio).then((res)=>{
           $('#exampleModal').hide()
-          $('#exampleModal').modal('hide')
-          $('.modal-backdrop').hide()
           this.getMunicipios()
+          this.idMunicipio = ''
           swal("Muy bien!", "Municipio editado correctamente", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors)

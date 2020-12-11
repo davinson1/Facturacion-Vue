@@ -27,6 +27,7 @@ Vue.prototype.$can = function(permissionName){
 Vue.prototype.$fecha = function(d){
   return moment(d).locale('es').format('LL');
 }
+Vue.prototype.$fechaHoy = moment().format('YYYY-MM-DD');
 
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
@@ -104,12 +105,13 @@ Vue.component('usuarios-component', require('./components/usuario/UsuariosCompon
 Vue.component('perfil-component', require('./components/usuario/PerfilComponent.vue').default);
 Vue.component('rol-component', require('./components/usuario/RolComponent.vue').default);
 Vue.component('tipodocumento-component', require('./components/usuario/TipoDocumentoComponent.vue').default);
-
 // Componentes de ubicacion
 Vue.component('pais-component', require('./components/ubicacion/PaisComponent.vue').default);
 Vue.component('departamento-component', require('./components/ubicacion/DepartamentoComponent.vue').default);
 Vue.component('municipio-component', require('./components/ubicacion/MunicipioComponent.vue').default);
-
+// Comnponentes de productos
+Vue.component('iva-component', require('./components/producto/IvaComponent.vue').default);
+Vue.component('forma-pago-component', require('./components/producto/FormaPagoComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

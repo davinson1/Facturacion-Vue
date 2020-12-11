@@ -12,7 +12,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{titulomodal}} </h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i :class="icono" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -74,7 +74,8 @@
       return {
         paises: [],
         paiscrear:{nombre:''},
-        titulomodal:'',
+        icono:'',
+        tituloModal:'',
         btncrear:true,
         btnEditar:false,
         idPais:''
@@ -82,7 +83,8 @@
     },
     methods:{
       abrirModal(){
-        this.titulomodal=' Crear País';
+        this.icono='fas fa-plus-circle fa-lg'
+        this.tituloModal=' Crear País'
         this.btnEditar=false
         this.btncrear=true
         this.paiscrear.nombre=''
@@ -107,7 +109,8 @@
         });  
       },
       editarPais(pais){
-        this.titulomodal=' Editar País'
+        this.icono='fas fa-edit fa-lg'
+        this.tituloModal=' Editar País'
         this.btnEditar=true
         this.btncrear=false
         this.paiscrear.nombre = pais.nombre
@@ -118,6 +121,7 @@
         axios.put('paises/'+this.idPais,this.paiscrear).then((res)=>{          
           $('#exampleModal').modal('hide')
           this.getPais()
+          this.idPais = ''
           swal("Muy bien!", "País editado correctamente", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);
