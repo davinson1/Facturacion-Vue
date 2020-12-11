@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Productos;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\FormasPago;
+
 class FormaPagoController extends Controller
 {
   /**
@@ -35,10 +36,12 @@ class FormaPagoController extends Controller
    */
   public function store(Request $request)
   {
-    $data = request()->validate([
-      'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
-    ]);
-    FormasPago::create($data);
+    if ($request->ajax()) {
+      $data = request()->validate([
+        'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
+      ]);
+      FormasPago::create($data);
+    }
   }
 
   /**
@@ -50,10 +53,12 @@ class FormaPagoController extends Controller
    */
   public function update(Request $request, FormasPago $formaPago)
   {
-    $data = request()->validate([
-      'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
-    ]);
-    $formaPago->update($data);
+    if ($request->ajax()) {
+      $data = request()->validate([
+        'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u',
+      ]);
+      $formaPago->update($data);
+    }
   }
 
   /**

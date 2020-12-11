@@ -20,11 +20,11 @@
               <div class="modal-body">
                 <form>
                   <div class="form-group">
-                    <label for="valor" class="control-label">Valor de iva</label>
+                    <label for="valor" class="control-label">Valor de iva (<span class="text-danger">*</span>)</label>
                     <input id="valor" class="form-control focus" type="text" placeholder="Escriba el valor de iva" v-model="ivas.valor_iva" required="">
                   </div>
                   <div class="form-group">
-                    <label for="fechaFinIva">Fecha fin</label>
+                    <label for="fechaFinIva">Fecha fin (<span class="text-danger">*</span>)</label>
                     <input id="fechaFinIva" class="form-control" type="date" placeholder="Fecha final de iva" v-model="ivas.fecha_fin" :min="$fechaHoy" required="">
                   </div>
                   <div class="modal-footer">

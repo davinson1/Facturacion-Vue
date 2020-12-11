@@ -20,7 +20,7 @@
               <div class="modal-body">
                 <form>
                   <div class="form-group">
-                    <label for="valor" class="control-label">Nombre formas de pago</label>
+                    <label for="valor" class="control-label">Nombre formas de pago (<span class="text-danger">*</span>)</label>
                     <input id="valor" class="form-control focus" type="text" placeholder="Escriba el nombre de forma de pago" v-model="formaPago.nombre" required="">
                   </div>
                   <div class="modal-footer">
