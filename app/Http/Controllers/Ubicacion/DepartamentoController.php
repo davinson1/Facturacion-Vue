@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Departamentos;
 use App\Models\Paises;
 
-
 class DepartamentoController extends Controller
 {
   public function __construct()

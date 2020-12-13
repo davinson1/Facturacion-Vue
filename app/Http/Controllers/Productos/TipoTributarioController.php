@@ -8,6 +8,13 @@ use App\Models\TipoTributario;
 
 class TipoTributarioController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver tipo-tributario')->only(['index','create']);    
+    $this->middleware('permission:crear tipo-tributario')->only('store');
+    $this->middleware('permission:editar tipo-tributario')->only('update');
+    $this->middleware('permission:eliminar tipo-tributario')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

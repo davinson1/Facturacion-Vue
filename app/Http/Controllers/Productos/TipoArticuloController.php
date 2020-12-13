@@ -8,6 +8,13 @@ use App\Models\TipoArticulo;
 
 class TipoArticuloController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver tipo-articulo')->only(['index','create']);    
+    $this->middleware('permission:crear tipo-articulo')->only('store');
+    $this->middleware('permission:editar tipo-articulo')->only('update');
+    $this->middleware('permission:eliminar tipo-articulo')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

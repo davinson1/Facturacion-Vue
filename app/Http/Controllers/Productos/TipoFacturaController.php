@@ -8,6 +8,13 @@ use App\Models\TipoFactura;
 
 class TipoFacturaController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver tipo-factura')->only(['index','create']);    
+    $this->middleware('permission:crear tipo-factura')->only('store');
+    $this->middleware('permission:editar tipo-factura')->only('update');
+    $this->middleware('permission:eliminar tipo-factura')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

@@ -9,6 +9,13 @@ use App\Models\Empresa;
 
 class ProveedorController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver proveedor')->only(['index','create']);    
+    $this->middleware('permission:crear proveedor')->only('store');
+    $this->middleware('permission:editar proveedor')->only('update');
+    $this->middleware('permission:eliminar proveedor')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

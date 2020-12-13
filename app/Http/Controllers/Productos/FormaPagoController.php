@@ -8,6 +8,13 @@ use App\Models\FormasPago;
 
 class FormaPagoController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver forma-pago')->only(['index','create']);    
+    $this->middleware('permission:crear forma-pago')->only('store');
+    $this->middleware('permission:editar forma-pago')->only('update');
+    $this->middleware('permission:eliminar forma-pago')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

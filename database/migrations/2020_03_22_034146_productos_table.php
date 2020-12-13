@@ -26,7 +26,7 @@ class ProductosTable extends Migration
             $table->integer('cantidad')->nullable()->default(0);
             $table->text('codigo_barras')->nullable();
             $table->string('foto')->nullable();
-            $table->text('especificaciones')->nullable();
+            $table->text('descripcion')->nullable();
 
             $table->timestamps();
 

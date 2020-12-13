@@ -8,6 +8,13 @@ use App\Models\CategoriaProductos;
 
 class CategoriaController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver categoria')->only(['index','create']);    
+    $this->middleware('permission:crear categoria')->only('store');
+    $this->middleware('permission:editar categoria')->only('update');
+    $this->middleware('permission:eliminar categoria')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *

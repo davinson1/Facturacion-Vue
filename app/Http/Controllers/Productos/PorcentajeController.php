@@ -8,6 +8,13 @@ use App\Models\Porcentaje;
 
 class PorcentajeController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver porcentaje')->only(['index','create']);    
+    $this->middleware('permission:crear porcentaje')->only('store');
+    $this->middleware('permission:editar porcentaje')->only('update');
+    $this->middleware('permission:eliminar porcentaje')->only('destroy');
+  }
   /**
    * Display a listing of the resource.
    *
