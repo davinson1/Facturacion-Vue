@@ -27,6 +27,7 @@ Vue.prototype.$can = function(permissionName){
 Vue.prototype.$fecha = function(d){
   return moment(d).locale('es').format('LL');
 }
+Vue.prototype.$fechaHoy = moment().format('YYYY-MM-DD');
 
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
@@ -104,12 +105,23 @@ Vue.component('usuarios-component', require('./components/usuario/UsuariosCompon
 Vue.component('perfil-component', require('./components/usuario/PerfilComponent.vue').default);
 Vue.component('rol-component', require('./components/usuario/RolComponent.vue').default);
 Vue.component('tipodocumento-component', require('./components/usuario/TipoDocumentoComponent.vue').default);
-
+Vue.component('empresa-component', require('./components/usuario/EmpresaComponent.vue').default);
 // Componentes de ubicacion
 Vue.component('pais-component', require('./components/ubicacion/PaisComponent.vue').default);
 Vue.component('departamento-component', require('./components/ubicacion/DepartamentoComponent.vue').default);
 Vue.component('municipio-component', require('./components/ubicacion/MunicipioComponent.vue').default);
-
+// Componentes de productos
+Vue.component('proveedor-component', require('./components/producto/ProveedorComponent.vue').default);
+Vue.component('categoria-component', require('./components/producto/CategoriaComponent.vue').default);
+Vue.component('producto-component', require('./components/producto/ProductoComponent.vue').default);
+Vue.component('tipo-articulo-component', require('./components/producto/TipoArticuloComponent.vue').default);
+Vue.component('forma-pago-component', require('./components/producto/FormaPagoComponent.vue').default);
+Vue.component('iva-component', require('./components/producto/IvaComponent.vue').default);
+Vue.component('porcentaje-component', require('./components/producto/PorcentajeComponent.vue').default);
+Vue.component('tipo-factura-component', require('./components/producto/TipoFacturaComponent.vue').default);
+Vue.component('tipo-tributario-component', require('./components/producto/TipoTributarioComponent.vue').default);
+// Componentes de compra
+Vue.component('tipo-compra-component', require('./components/compra/TipoCompraComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -117,5 +129,5 @@ Vue.component('municipio-component', require('./components/ubicacion/MunicipioCo
  */
 
 const app = new Vue({
-    el: '#app'
+  el: '#app'
 });

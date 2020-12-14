@@ -12,7 +12,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{titulomodal}} </h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i :class="icono" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -74,7 +74,8 @@
       return {
         tiposDocumentos: [],
         tipoDocumentocrear:{nombre:''},
-        titulomodal:'',
+        icono:'',
+        tituloModal:'',
         btncrear:true,
         btnEditar:false,
         idTipoDocumento:''
@@ -82,7 +83,8 @@
     },
     methods:{
       abrirModal(){
-        this.titulomodal=' Crear Tipo Documento';
+        this.icono='fas fa-plus-circle fa-lg'
+        this.tituloModal=' Crear Tipo Documento';
         this.btnEditar=false
         this.btncrear=true
         this.tipoDocumentocrear.nombre=''
@@ -107,7 +109,8 @@
         });
       },
       editarTipoDocumento(tipoDocumento){
-        this.titulomodal=' Editar Tipo de Documento'
+        this.icono='fas fa-edit fa-lg'
+        this.tituloModal=' Editar Tipo de Documento'
         this.btnEditar=true
         this.btncrear=false
         this.tipoDocumentocrear.nombre = tipoDocumento.nombre
@@ -118,6 +121,7 @@
         axios.put('tipoDocumentos/'+this.idTipoDocumento,this.tipoDocumentocrear).then((res)=>{
           $('#exampleModal').modal('hide')
           this.getPais()
+          this.idTipoDocumento=''
           swal("Muy bien!", "Tipo de documento editado correctamente", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);

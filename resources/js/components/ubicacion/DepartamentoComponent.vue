@@ -12,7 +12,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus-circle fa-lg" ></i>{{tituloModal}} </h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i :class="icono" ></i>{{tituloModal}} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -83,6 +83,7 @@
         departamentos: [],
         paises: [],
         crearDepartamento:{idPais:'1',nombre:''},
+        icono:'',
         tituloModal:'',
         btnCrear:true,
         btnEditar:false,
@@ -91,6 +92,7 @@
     },
     methods:{
       abirimodal(){
+        this.icono='fas fa-plus-circle fa-lg'
         this.tituloModal=' Crear Departamento'
         this.btnEditar=false
         this.btnCrear=true
@@ -119,6 +121,7 @@
         });
       },
       editarDepartamento(item){
+        this.icono='fas fa-edit fa-lg'
         this.tituloModal=' Editar País'
         this.btnEditar=true
         this.btnCrear=false
@@ -131,8 +134,7 @@
         axios.put('departamentos/'+this.idDepartamento,this.crearDepartamento).then((res)=>{
           this.getDepartamentos()
           $('#exampleModal').hide()
-          $('#exampleModal').modal('hide')
-          $('.modal-backdrop').hide()
+          this.idDepartamento = ''
           swal("Muy bien!", "Departamento editado correctamente", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);

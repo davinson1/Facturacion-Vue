@@ -17,7 +17,7 @@ class CategoriaProductosTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('nombre');
-            $table->text('detalle')->nullable();
+            $table->text('descripcion')->nullable();
 
             $table->timestamps();
         });

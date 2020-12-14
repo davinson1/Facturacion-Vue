@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Ubicacion;
+
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
-
 use App\Models\Municipios;
 use App\Models\Departamentos;
 

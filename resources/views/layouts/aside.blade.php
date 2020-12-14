@@ -75,7 +75,7 @@
           @endcan
           @can('ver categoria')
             <li>
-              <a class="treeview-item @yield('active-categoria')" href="categorias"><i class="icon fas fa-shopping-cart"></i> Categorias de Productos</a>
+              <a class="treeview-item @yield('active-categoria')" href="categorias"><i class="icon fas fa-shopping-cart"></i> Categoría de productos</a>
             </li>
           @endcan
           @can('ver producto')
