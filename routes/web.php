@@ -33,6 +33,9 @@ Route::middleware(['auth'])->group(function(){
 	// Rutas para Compras
 		Route::resource('tipoCompras', 'Compras\TipoCompraController')->except(['show', 'edit',])->middleware('permission:ver tipo-compra');
 		Route::resource('compras', 'Compras\CompraController')->except(['show', 'edit',])->middleware('permission:ver compra');
-		Route::resource('consultarCompras', 'Compras\ConsultarCompraController')->except(['show', 'edit',])->middleware('permission:ver consultar-compra');
-		Route::resource('abonoCompras', 'Compras\AbonoCompraController')->except(['show', 'edit',])->middleware('permission:ver abono-compra');
+		Route::resource('consultarCompras', 'Compras\ConsultarCompraController')->except(['show'])->middleware('permission:ver consultar-compra');
+    Route::resource('abonoCompras', 'Compras\AbonoCompraController')->except(['show', 'edit',])->middleware('permission:ver abono-compra');
+    Route::post('/buscarCompras', 'Compras\ConsultarCompraController@buscarCompras')->name('buscarCompras');
+    Route::put('/anularCompras', 'Compras\ConsultarCompraController@anularCompras')->name('anularCompras');
+
 });

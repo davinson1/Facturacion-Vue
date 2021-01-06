@@ -31,7 +31,7 @@ Vue.prototype.$fechaHoy = moment().format('YYYY-MM-DD');
 
 Vue.prototype.$tablaGlobal = function () {
 	this.$nextTick(() => {
-    $('.select2').select2({width: '100%'});       
+    $('.select2').select2({width: '100%'});
     $('#listado-tabla').DataTable({
       language: {
         search: " Buscar ",
@@ -122,6 +122,7 @@ Vue.component('tipo-factura-component', require('./components/producto/TipoFactu
 Vue.component('tipo-tributario-component', require('./components/producto/TipoTributarioComponent.vue').default);
 // Componentes de compra
 Vue.component('tipo-compra-component', require('./components/compra/TipoCompraComponent.vue').default);
+Vue.component('consulta-compra-component', require('./components/compra/ConsultaCompraComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

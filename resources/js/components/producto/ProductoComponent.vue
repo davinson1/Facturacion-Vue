@@ -1,4 +1,4 @@
-<template>  
+<template>
   <div class="container">
     <div class="col-md-12">
       <div class="tile">
@@ -95,8 +95,9 @@
                   <th scope="col">Foto</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">Cantidad</th>
+                  <th scope="col">Precio Venta</th>
                   <th scope="col">Descripción</th>
-                  <th scope="col">Fecha creación</th>                  
+                  <th scope="col">Fecha creación</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>
@@ -106,6 +107,7 @@
                   <td><img :src="producto.foto" class="mb-3 rounded mx-auto d-block " alt="Foto del producto" width="50" height="50"></td>
                   <td>{{producto.nombre}}</td>
                   <td>{{producto.cantidad}}</td>
+                  <td>{{producto.valor_venta}}</td>
                   <td>{{producto.descripcion}}</td>
                   <td>{{$fecha(producto.created_at)}}</td>
                   <td class="text-center">
@@ -130,7 +132,7 @@
       });
     },
     data() {
-      return {        
+      return {
         icono:'',
         tituloModal:'',
         imagenSeleccionada:'',
@@ -157,13 +159,13 @@
         this.producto.descripcion=''
       },
       obtenerFoto(img){
-        let file = img.target.files[0]        
+        let file = img.target.files[0]
         this.producto.foto = file
         let reader = new FileReader()
         reader.onload = (e) => {
           this.imagenSeleccionada = e.target.result
         }
-        reader.readAsDataURL(file)        
+        reader.readAsDataURL(file)
       },
       modalCrear(){
         this.icono='fas fa-plus-circle fa-lg'
@@ -210,7 +212,7 @@
         formData.append('nombre',this.producto.nombre)
         formData.append('codigo_barras',this.producto.codigo_barras)
         formData.append('descripcion',this.producto.descripcion)
-        
+
         axios.post('productos', formData).then((res) =>{
           this.getProductos()
           $('#exampleModal').modal('hide')
@@ -232,7 +234,7 @@
         formData.append('nombre',this.producto.nombre)
         formData.append('codigo_barras',this.producto.codigo_barras)
         formData.append('descripcion',this.producto.descripcion)
-        axios.post('productos/'+this.idProducto,formData).then((res)=>{          
+        axios.post('productos/'+this.idProducto,formData).then((res)=>{
           $('#exampleModal').modal('hide')
           this.idProducto = ''
           this.getProductos()
@@ -258,7 +260,7 @@
               var array = Object.values(error.response.data.errors);
               array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
             });
-          } 
+          }
         });
       },
     }
