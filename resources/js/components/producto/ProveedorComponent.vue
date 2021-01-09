@@ -131,12 +131,11 @@
         proveedor:{id_empresa:'', nombre:'', telefono:'', descripcion:'', estado:{}},
         btnCrear:true,
         btnEditar:false,
-        idProveddor:''
+        idProveedor:''
       }
     },
     methods:{
       limpiar(){
-        this.proveedor.id_empresa=''
         this.proveedor.nombre=''
         this.proveedor.telefono=''
         this.proveedor.descripcion=''
@@ -162,7 +161,7 @@
         this.proveedor.telefono = datos.telefono
         this.proveedor.descripcion = datos.descripcion
         this.proveedor.estado = datos.estado
-        this.idProveddor = datos.id
+        this.idProveedor = datos.id
         $('#exampleModal').modal('show')
       },
       getProveedores(){
@@ -170,7 +169,7 @@
           $('#listado-tabla').DataTable().destroy()
           this.proveedores = res.data.proveedor
           this.empresas = res.data.empresa
-          console.log(this.proveedores)
+          this.proveedor.id_empresa = res.data.empresa[0].id        
           this.$tablaGlobal()
         });
       },
@@ -186,9 +185,9 @@
         });
       },
       editar(){
-        axios.put('proveedores/'+this.idProveddor,this.proveedor).then((res)=>{          
+        axios.put('proveedores/'+this.idProveedor,this.proveedor).then((res)=>{          
           $('#exampleModal').modal('hide')
-          this.idProveddor = ''
+          this.idProveedor = ''
           this.getProveedores()
           swal("Muy bien!", "Proveedor editado correctamente", "success")
         }).catch(function (error) {
@@ -198,7 +197,7 @@
       },
       eliminar(dato){
         swal({
-          title: "¿Está seguro de eliminar el Proveedor "+dato.nombre+"?",
+          title: "¿Está seguro de eliminar el proveedor "+dato.nombre+"?",
           text: "Si preciona OK se eliminará permanentemente.",
           icon: "warning",
           buttons: ["Cancelar", "Eliminar!"],

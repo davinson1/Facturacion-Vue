@@ -24,12 +24,12 @@
                     <input id="valor" class="form-control focus" type="text" placeholder="Escriba el nombre del porcentaje" v-model="porcentaje.nombre" required="">
                   </div>
                   <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" class="form-control" rows="3" placeholder="Agregue una descripción" v-model="porcentaje.descripcion"></textarea>
+                    <label for="descripcion">Descripción (<span class="text-danger">*</span>)</label>
+                    <textarea id="descripcion" class="form-control" rows="3" placeholder="Agregue una descripción" v-model="porcentaje.descripcion" required=""></textarea>
                   </div>
                   <div class="form-group">
                     <label for="porcentaje"> Porcentaje (<span class="text-danger">*</span>)</label>
-                    <input id="porcentaje" class="form-control" type="number" placeholder="Porcentaje" v-model="porcentaje.porcentaje" required="">
+                    <input id="porcentaje" class="form-control" type="text" placeholder="Porcentaje" v-model="porcentaje.porcentaje" required="">
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>

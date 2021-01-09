@@ -49,8 +49,8 @@ class ProveedorController extends Controller
     $data = request()->validate([
       'id_empresa' => 'required|numeric',
       'nombre' => 'required|min:3|max:100|unique:proveedor,nombre|regex:/^[\pL\s\-]+$/u',
-      'telefono' => 'min:9|numeric',
-      'descripcion' => 'max:100',
+      'telefono' => 'nullable|min:9|numeric',
+      'descripcion' => 'nullable|max:100',
     ]);
     Proveedor::create([
       'id_empresa'=>$data['id_empresa'],
@@ -74,8 +74,8 @@ class ProveedorController extends Controller
     $data = request()->validate([
       'id_empresa' => 'required|numeric',
       'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u|unique:proveedor,nombre,'.$proveedore->id,
-      'telefono' => 'min:9|numeric',
-      'descripcion' => 'max:100',
+      'telefono' => 'nullable|min:9|numeric',
+      'descripcion' => 'nullable|max:100',
       'estado' => 'required|boolean',
     ]);
     $proveedore->update([

@@ -54,7 +54,7 @@ class ProductoController extends Controller
   {    
     if ($request->ajax()) {
       $data = request()->validate([
-        'foto' => 'image',
+        'foto' => 'nullable|image',
         'id_tipo_articulo' => 'required|numeric',
         'id_proveedor' => 'required|numeric',
         'id_categoria' => 'required|numeric',
@@ -65,7 +65,7 @@ class ProductoController extends Controller
       ]);
 
       if (empty($data['foto'])) {
-        $foto = '';
+        $data['foto'] = '';
       }else{
         $data['foto'] = str_replace("public/","storage/",$request->file('foto')->store('public/fotosProductos'));
       }

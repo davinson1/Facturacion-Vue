@@ -62,7 +62,7 @@
                 <div class="col-6 mb-3 mx-auto">
                   <img :src="this.imagenSeleccionada" class="rounded mx-auto d-block" alt="Foto del usuario" height="200">
                   <div class="custom-file">
-                    <label class="custom-file-label" for="customFileLang">Cambiar foto</label>
+                    <label class="custom-file-label text-truncate" for="customFileLang">{{nombreArchivo}}</label>
                     <input type="file" class="custom-file-input" id="customFileLang" lang="es" accept="image/png, .jpeg, .jpg, image/gif" @change="obtenerFoto">
                   </div>
                 </div>
@@ -141,6 +141,7 @@
         tipoDocumento: [],
         municipio: [],
         roles:[],
+        nombreArchivo:'Cambiar foto',
         tiposDocumentos: [],
         municipios: [],
         actualizarUsuario:{nombre:'',apellido:'',tipo_documento:'',numero_documento:'',municipio:'',direccion:'',email:'',foto:'',telefono:'',contrasenia:'',contrasenia_confirmation:''},
@@ -172,6 +173,7 @@
       },
       obtenerFoto(img){
         let file = img.target.files[0]
+        this.nombreArchivo = img.target.files[0].name
         this.actualizarUsuario.foto = file
         let reader = new FileReader()
         reader.onload = (e) => {

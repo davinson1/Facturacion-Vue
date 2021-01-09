@@ -82,7 +82,7 @@
       return {
         municipios: [],
         departamentos: [],
-        crearMunicipio:{idDepartamento:'1',nombre:''},
+        crearMunicipio:{idDepartamento:'',nombre:''},
         icono:'',
         tituloModal:'',
         btncrear:true,
@@ -104,6 +104,7 @@
           $('#listado-tabla').DataTable().destroy()
           this.municipios = res.data.municipios
           this.departamentos = res.data.departamentos
+          this.crearMunicipio.idDepartamento = res.data.departamentos[0].id
           this.$tablaGlobal()
         });
       },

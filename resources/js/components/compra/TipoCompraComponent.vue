@@ -24,7 +24,7 @@
                     <input id="valor" class="form-control focus" type="text" placeholder="Escriba el nombre del tipo de compra." v-model="tipoCompra.nombre" required="">
                   </div>
                   <div class="form-group">
-                    <label for="descripcion">Descripción</label>
+                    <label for="descripcion">Descripción (<span class="text-danger">*</span>)</label>
                     <textarea id="descripcion" class="form-control" rows="3" placeholder="Agregue una descripción" v-model="tipoCompra.descripcion"></textarea>
                   </div>
                   <div class="modal-footer">

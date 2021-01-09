@@ -46,8 +46,8 @@ class PorcentajeController extends Controller
     if ($request->ajax()) {
       $data = request()->validate([
         'nombre' => 'required|min:3|max:100|unique:porcentaje,nombre|regex:/^[\pL\s\-]+$/u',
-        'descripcion' => 'max:100',
-        'porcentaje' => 'required'
+        'descripcion' => 'required|max:100',
+        'porcentaje' => 'required|numeric'
       ]);
       Porcentaje::create($data);
     }
@@ -65,7 +65,7 @@ class PorcentajeController extends Controller
     if ($request->ajax()) {
       $data = request()->validate([
         'nombre' => 'required|min:3|max:100|regex:/^[\pL\s\-]+$/u|unique:porcentaje,nombre,'.$porcentaje->id,
-        'descripcion' => 'max:100',
+        'descripcion' => 'required|max:100',
         'porcentaje' => 'required|numeric'
       ]);
       $porcentaje->update($data);

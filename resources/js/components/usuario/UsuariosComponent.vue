@@ -156,7 +156,7 @@
         tiposDocumentos: [],
         municipios: [],
         roles:[],
-        crearusuarios:{idtipoDocumento:'1',idMunicipio:'1',nombre:'',apellido:'',
+        crearusuarios:{idtipoDocumento:'',idMunicipio:'',nombre:'',apellido:'',
         documento:'',direccion:'',email:'',copiasDocumento:'',contrasena:''},
         arrayRoles:[],
         tituloModal:'',
@@ -170,7 +170,6 @@
       }
     },
     methods:{
-
       documentoUsuario(e){
           let documento = e.target.files[0]
           this.crearusuarios.copiasDocumento = documento
@@ -190,7 +189,11 @@
           $('#listado-tabla').DataTable().destroy()
           this.usuarios = res.data.usuarios
           this.tiposDocumentos = res.data.tiposDocumentos
+          this.crearusuarios.idtipoDocumento = res.data.tiposDocumentos[0].id
+
           this.municipios = res.data.municipios
+          this.crearusuarios.idMunicipio = res.data.municipios[0].id
+
           this.roles = res.data.roles
           this.$tablaGlobal()
         });

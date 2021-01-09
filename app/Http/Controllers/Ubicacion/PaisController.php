@@ -32,9 +32,7 @@ class PaisController extends Controller
       $data = request()->validate([
         'nombre' => 'required|min:3|max:100|unique:pais,nombre|regex:/^[\pL\s\-]+$/u',
       ]);
-      $pais = new Paises();
-      $pais->nombre = $request->nombre;
-      $pais->save();
+      Paises::create($data);
     }
   }
 

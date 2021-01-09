@@ -82,7 +82,7 @@
       return {
         departamentos: [],
         paises: [],
-        crearDepartamento:{idPais:'1',nombre:''},
+        crearDepartamento:{idPais:'',nombre:''},
         icono:'',
         tituloModal:'',
         btnCrear:true,
@@ -104,6 +104,7 @@
           $('#listado-tabla').DataTable().destroy()
           this.departamentos = res.data.departamentos
           this.paises = res.data.paises
+          this.crearDepartamento.idPais = res.data.paises[0].id
           this.$tablaGlobal()
         });
       },
@@ -113,8 +114,7 @@
           $('#exampleModal').hide()
           $('#exampleModal').modal('hide')
           $('.modal-backdrop').hide()
-          swal("Muy bien!", "Departamento creado correctamente", "success")
-          this.crearDepartamento.selected='1'
+          swal("Muy bien!", "Departamento creado correctamente", "success")          
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors);
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"));
