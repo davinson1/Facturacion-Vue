@@ -156,13 +156,8 @@
         tiposDocumentos: [],
         municipios: [],
         roles:[],
-<<<<<<< HEAD
         crearusuarios:{idtipoDocumento:'',idMunicipio:'',nombre:'',apellido:'',
         documento:'',direccion:'',email:'',copiasDocumento:'',contrasena:''},
-=======
-        crearusuarios:{idtipoDocumento:'1',idMunicipio:'1',nombre:'',apellido:'',
-        documento:'',direccion:'',email:'',telefono:'',copiasDocumento:'',contrasena:''},
->>>>>>> 42e1b5ee9ba64d4b67daca6e20da430c0d68ad4d
         arrayRoles:[],
         tituloModal:'',
         btnCrear:true,

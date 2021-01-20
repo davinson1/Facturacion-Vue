@@ -1,4 +1,4 @@
-<template>  
+<template>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -13,10 +13,18 @@
                 <form>
                   <div class="row">
                     <div class="col-6">
-                      <label for="buscador">Buscar producto</label>                      
-                      <input id="buscador" type="text" class="form-control" placeholder="Buscar producto" required="" v-model="nombre" autocomplete="off" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" v-for="producto in productoEncontrado" @click="seleccion(producto)">{{producto.nombre}}</a>
+                      <label for="buscador">Buscar producto</label>
+                      <input id="buscador" type="text" class="form-control" placeholder="Buscar producto" required="" v-model="nombre" autocomplete="off" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-on:keyup="autocompletar">
+                      <div class="dropdown-menu" style="width:92%" >
+                        <a class="dropdown-item m-0 " href="#" v-for="producto in resultados" @click="seleccion(producto)">
+                          <div>
+                          <img :src="producto.foto" height='50px' width='50px' class='float-left mr-3'/>
+                          <span class="badge badge-info float-right">{{producto.cantidad}}</span>
+                          <div>
+                            <span class="text-dark h5" >{{producto.nombre}}</span><br>
+                          </div>
+                        </div>
+                        </a>
                       </div>
                     </div>
                     <div class="col" v-if="disponible">
@@ -55,7 +63,7 @@
                         <th scope="col">Acciones</th>
                       </tr>
                     </thead>
-                    <tbody>                      
+                    <tbody>
                       <tr v-for="temporal in compraTemporal">
                         <td>{{temporal.id_producto}}</td>
                         <td>{{temporal.nombre_producto}}</td>
@@ -73,7 +81,7 @@
                       </tr>
                     </tbody>
                     <tfoot class="text-right font-weight-bold">
-                      <!-- Condenido de Ajax -->        
+                      <!-- Condenido de Ajax -->
                       <tr>
                         <td colspan="7" class="text-right">Total $</td>
                         <td id="total" class="text-right">{{totales}}</td>
@@ -83,7 +91,7 @@
                 </div>
               </div>
               <!-- /.col -->
-              <div class="col-md-4 shadow rounded p-0">                
+              <div class="col-md-4 shadow rounded p-0">
                 <div class="widget-small primary mb-2"><i class="icon fa fa-dollar-sign fa-3x"></i>
                   <div class="info">
                     <h4>Total</h4>
@@ -149,8 +157,8 @@
   import select2 from 'select2'
   export default {
     mounted(){
-      this.getDatos()      
-      $('.select-producto').select2({width: '100%'})      
+      this.getDatos()
+      $('.select-producto').select2({width: '100%'})
     },
     data() {
       return {
@@ -159,6 +167,7 @@
         tiposCompras: [],
         formasPagos: [],
         compraTemporal: [],
+        resultados: [],
         nombre:'',
         nombreArchivo:'Soporte de compra',
         filtros:[],
@@ -168,7 +177,7 @@
       }
     },
     methods:{
-      getDatos(){        
+      getDatos(){
        axios.get('compras/create').then(res=>{
           this.proveedores = res.data.proveedores
           this.compra.id_proveedor = res.data.proveedores[0].id
@@ -188,43 +197,49 @@
         this.datosProducto.id_producto = datos.id
         this.datosProducto.nombre_producto = datos.nombre
         this.datosProducto.foto = datos.foto
-        this.datosProducto.cantidad_producto = datos.cantidad        
+        this.datosProducto.cantidad_producto = datos.cantidad
         this.datosProducto.codigo_barras = datos.codigo_barras
         this.datosProducto.descripcion_producto = datos.descripcion
         this.disponible = true
         console.log(this.total)
       },
       limpiar(){
-        this.nombre = ''        
+        this.nombre = ''
         this.datosProducto.id_producto = ''
         this.datosProducto.nombre_producto = ''
         this.datosProducto.foto = ''
-        this.datosProducto.cantidad_producto = ''  
+        this.datosProducto.cantidad_producto = ''
         this.datosProducto.codigo_barras = ''
         this.datosProducto.precio_venta = ''
         this.datosProducto.precio_compra = ''
         this.datosProducto.descripcion_producto = ''
-        this.disponible = false                
+        this.disponible = false
       },
       agregar(){
+        if(parseInt(this.datosProducto.precio_venta) < parseInt(this.datosProducto.precio_compra)){
+          swal("Ooohh vaya!", "El precio de la venta no puede ser menor al de compra", "warning")
+        }else {
+        if(this.datosProducto.cantidad_producto <= 0){
+          swal("Ooohh vaya!", "La cantidad del producto no puede ser cero o menor", "warning")
+        }else{
         this.datosProducto.accion = 'producto_temporal'
-        axios.post('compras', this.datosProducto).then(res=>{          
+        axios.post('compras', this.datosProducto).then(res=>{
           this.compraTemporal = res.data
           this.limpiar()
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors)
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"))
-        });
+        });}}
       },
       descartarProducto(datos){
-        axios.delete('compras/'+datos.id).then(res=>{          
+        axios.delete('compras/'+datos.id).then(res=>{
           this.compraTemporal = res.data
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors)
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"))
         });
       },
-      obtenerScanner(scanner){                
+      obtenerScanner(scanner){
         this.compra.scanner = scanner.target.files[0]
         this.nombreArchivo = scanner.target.files[0].name
       },
@@ -238,7 +253,7 @@
         formData.append('total_compra',this.compra.total)
         formData.append('descripcion',this.compra.descripcion)
 
-        axios.post('compras', formData).then(res=>{          
+        axios.post('compras', formData).then(res=>{
           this.compraTemporal = res.data
           swal("Muy bien!", "Compra creada correctamente.", "success")
           this.compra.scanner = ''
@@ -256,24 +271,26 @@
           this.limpiar()
           this.compra.scanner = ''
           this.compra.total = ''
-          this.compra.descripcion = ''          
+          this.compra.descripcion = ''
           swal("Muy bien!", "Compra anulada correctamente.", "success")
         }).catch(function (error) {
           var array = Object.values(error.response.data.errors)
           array.forEach(element => swal("Ooohhh vaya!", ""+element,"error"))
         });
-      }
+      },
+      autocompletar(){
+        if(this.nombre.length >= 2){
+          this.resultados = this.productos.filter((producto) => {return producto.nombre.includes(this.nombre) || producto.codigo_barras.includes(this.nombre)})
+        }
+      },
     },
     computed:{
-      productoEncontrado(){
-        return this.productos.filter((producto)=> producto.nombre.includes(this.nombre))
-      },
       totales(){
         var suma = 0
-        this.compraTemporal.forEach((el)=>{              
+        this.compraTemporal.forEach((el)=>{
           var total = el.cantidad_producto * el.precio_compra
           var total2 =  parseInt(total)
-          suma+=total2            
+          suma+=total2
         })
         this.compra.total = suma
         return suma

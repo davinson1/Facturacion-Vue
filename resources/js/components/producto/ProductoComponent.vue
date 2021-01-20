@@ -106,15 +106,11 @@
                   <td scope="row">{{producto.id}}</td>
                   <td><img :src="producto.foto" class="mb-3 rounded mx-auto d-block " alt="Foto del producto" width="50" height="50"></td>
                   <td>{{producto.nombre}}</td>
-<<<<<<< HEAD
                   <td>
                     <span class="badge badge-success" v-if="producto.cantidad >= 11">{{producto.cantidad}}</span>
                     <span class="badge badge-danger" v-if="producto.cantidad <= 10">{{producto.cantidad}}</span>
                   </td>
-=======
-                  <td>{{producto.cantidad}}</td>
                   <td>{{producto.valor_venta}}</td>
->>>>>>> 42e1b5ee9ba64d4b67daca6e20da430c0d68ad4d
                   <td>{{producto.descripcion}}</td>
                   <td>{{$fecha(producto.created_at)}}</td>
                   <td class="text-center">
@@ -139,7 +135,7 @@
               </div>
               <div class="modal-body">
                 <div class="table-responsive">
-                  <table class="table table-hover table-bordered table-striped">                  
+                  <table class="table table-hover table-bordered table-striped">
                     <tbody>
                       <tr>
                         <th scope="row">Foto</th>
@@ -186,7 +182,7 @@
                         <td>{{info.descripcion}}</td>
                       </tr>
                       <tr>
-                        <th scope="row">Fecha creación</th>                      
+                        <th scope="row">Fecha creación</th>
                         <td>{{$fecha(info.fechaCreacion)}}</td>
                       </tr>
                       <tr>
@@ -278,7 +274,7 @@
       modalEditar(datos){
         this.icono='fas fa-edit fa-lg'
         this.tituloModal=' Editar producto'
-        this.nombreArchivo = 'Foto del producto'        
+        this.nombreArchivo = 'Foto del producto'
         this.btnEditar=true
         this.btnCrear=false
         this.imagenSeleccionada = datos.foto
