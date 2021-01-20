@@ -122,7 +122,11 @@ Vue.component('tipo-factura-component', require('./components/producto/TipoFactu
 Vue.component('tipo-tributario-component', require('./components/producto/TipoTributarioComponent.vue').default);
 // Componentes de compra
 Vue.component('tipo-compra-component', require('./components/compra/TipoCompraComponent.vue').default);
+<<<<<<< HEAD
 Vue.component('compra-component', require('./components/compra/CompraComponent.vue').default);
+=======
+Vue.component('consulta-compra-component', require('./components/compra/ConsultaCompraComponent.vue').default);
+>>>>>>> 42e1b5ee9ba64d4b67daca6e20da430c0d68ad4d
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

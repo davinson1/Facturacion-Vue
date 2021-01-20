@@ -14,6 +14,13 @@ use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('permission:ver usuario')->only(['index','create']);
+    $this->middleware('permission:crear usuario')->only('store');
+    $this->middleware('permission:editar usuario')->only('update');
+    $this->middleware('permission:eliminar usuario')->only('destroy');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -55,10 +62,18 @@ class UsuarioController extends Controller
         'apellido' => 'required|min:3|max:100',
         'documento' => 'required|numeric|min:100000|max:9999999999|unique:users,numero_documento',
         'email' => 'required|unique:users,email',
+        'telefono' => 'nullable|min:10000000|max:99999999999|numeric',
         'copiaDocumento' => 'nullable|max:3000',
         'rol' => 'required',
         'contrasena' => 'required|min:8|string',
+      ],
+      [
+        'documento.max' => 'El campo Número de Documento debe contener entre 6 a 10 números',
+        'documento.min' => 'El campo Número de Documento debe contener entre 6 a 10 números',
+        'telefono.min' => 'El campo Teléfono Movil debe contener entre 8 a 11 números',
+        'telefono.max' => 'El campo Teléfono Movil debe contener entre 8 a 11 números',
       ]);
+
       if ($request->copiaDocumento==null) {
         $documento = '';
       }else{
@@ -73,6 +88,7 @@ class UsuarioController extends Controller
       $user->numero_documento = $request->documento;
       $user->direccion = $request->direccion;
       $user->email = $request->email;
+      $user->telefono = $request->telefono;
       $user->foto = 'storage/fotosusuarios/avatar.png';
       $user->copia_documento = str_replace("public/","storage/",$documento);
       $user->password = Hash::make($request->contrasena);
@@ -99,9 +115,16 @@ class UsuarioController extends Controller
         'apellido' => 'required|min:3|max:100',
         'documento' => 'required|numeric|min:100000|max:9999999999|unique:users,numero_documento,'.$usuario->id,
         'email' => 'required|unique:users,email,'.$usuario->id,
+        'telefono' => 'nullable|min:10000000|max:99999999999|numeric',
         'copiaDocumento' => 'nullable|max:3000',
         'rol' => 'required',
         'contrasena' => 'nullable|min:8|string',
+      ],
+      [
+        'documento.max' => 'El campo Número de Documento debe contener entre 6 a 10 números',
+        'documento.min' => 'El campo Número de Documento debe contener entre 6 a 10 números',
+        'telefono.min' => 'El campo Teléfono Movil debe contener entre 8 a 11 números',
+        'telefono.max' => 'El campo Teléfono Movil debe contener entre 8 a 11 números',
       ]);
 
       if (empty($request->contrasena))
@@ -126,10 +149,6 @@ class UsuarioController extends Controller
         $documento= $usuario->copia_documento=\Storage::putFile('public/documentosusuarios', $request->file('copiaDocumento'));
       }
       }
-
-
-
-
       $usuario->update([
         'name' => $request->nombre,
         'apellido' => $request->apellido,
@@ -138,6 +157,7 @@ class UsuarioController extends Controller
         'id_municipio' => $request->idMunicipio,
         'direccion' => $request->direccion,
         'email' => $request->email,
+        'telefono' => $request->telefono,
         'copia_documento' => str_replace("public/","storage/",$documento),
         //'telefono' =>$request->telefono,
         'password' => $pass

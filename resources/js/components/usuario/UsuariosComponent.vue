@@ -4,7 +4,7 @@
       <div class="tile">
       <!-- Button modal registrar -->
         <button type="button" class="btn btn-primary float-right" @click="abiriModal">
-        <i class="fas fa-plus-circle" v-if="$can('crear pais')"></i> Registrar Usuarios
+        <i class="fas fa-plus-circle" v-if="$can('crear usuario')"></i> Registrar Usuarios
         </button>
         <h3 class="tile-title"> Listado de Usuarios</h3>
         <!-- Modal registrar-->
@@ -40,57 +40,57 @@
 
                     <div class="row mb-3">
                     <div class="col-6">
-                      <label for="nombreUsusario">Nombre del usuario (*)</label>
-                      <input id="nombreUsusario" v-model="crearusuarios.nombre" class="form-control" type="text" name="nombreUsusario" required="">
+                      <label>Nombres del usuario (*)</label>
+                      <input v-model="crearusuarios.nombre" class="form-control" type="text" placeholder="Escriba los nombres completos" required="">
                     </div>
                     <div class="col-6">
-                      <label for="apellidoUsusario">Apellido del usuario (*)</label>
-                      <input id="apellidoUsusario" v-model="crearusuarios.apellido"  class="form-control" type="text" name="apellidoUsusario" required="" >
+                      <label>Apellido del usuario (*)</label>
+                      <input v-model="crearusuarios.apellido"  class="form-control" type="text" placeholder="Escriba los apellidos" required="" >
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <div class="col-6">
                       <label for="documentoUsusario">Número de documento (*)</label>
-                      <input id="documentoUsusario" v-model="crearusuarios.documento"  class="form-control" type="number" name="documentoUsusario" required="">
+                      <input id="documentoUsusario" v-model="crearusuarios.documento"  class="form-control" type="number" placeholder="Escriba el número de documento" required="">
                     </div>
                     <div class="col-6">
                       <label for="direccionUsusario">Dirección</label>
-                      <input id="direccionUsusario" v-model="crearusuarios.direccion"  class="form-control" type="text" name="direccionUsusario">
+                      <input id="direccionUsusario" v-model="crearusuarios.direccion"  class="form-control" type="text" placeholder="Escriba la dirreción">
                     </div>
                   </div>
 
                   <div class="row mb-3">
                     <div class="col-6">
                       <label for="emailUsusario">Correo electrónico (*)</label>
-                      <input id="emailUsusario" v-model="crearusuarios.email" class="form-control" type="email" name="emailUsusario" required="">
+                      <input id="emailUsusario" v-model="crearusuarios.email" class="form-control" type="email" placeholder="Escriba el correo electronico" required="">
                     </div>
                     <div class="col-6">
-                      <label for="copiaDocumento">Copia de documento</label>
-                      <input id="copiaDocumento"  accept="application/pdf" @change="documentoUsuario" class="form-control" type="file" ref="documentoFile">
-                      <small class="form-text text-muted" v-if="copia"><a :href="this.copia" target="_black">Ver Archivo <i class="fas fa-external-link-alt"></i></a></small>
-
-
-                      </div>
+                      <label>Teléfono Móvil</label>
+                      <input v-model="crearusuarios.telefono" class="form-control" type="number" placeholder="Escriba el numero telefonico">
+                    </div>
                   </div>
 
                   <div class="row mb-3">
                     <div class="col-6">
+                      <label for="copiaDocumento">Copia de documento</label>
+                      <input id="copiaDocumento"  accept="application/pdf" @change="documentoUsuario" class="form-control" type="file" ref="documentoFile">
+                      <small class="form-text text-muted" v-if="copia"><a :href="this.copia" target="_black">Ver Archivo <i class="fas fa-external-link-alt"></i></a></small>
+                    </div>
+                    <div class="col-6">
                       <label for="claveUsusario">Contraseña (*)</label>
-                      <input id="claveUsusario" v-model="crearusuarios.contrasena" class="form-control" type="password" name="claveUsusario" required="">
+                      <input id="claveUsusario" v-model="crearusuarios.contrasena" class="form-control" type="password" placeholder="Escriba la contraseña del usuario" required="">
                     </div>
                   </div>
 
-
-
-
-
                     <h5>Roles:</h5>
+
+                  <div class="animated-checkbox">
                       <label v-for="rol in roles">
                         <input type="checkbox" v-model="arrayRoles" :value="rol.id">
                         <span class="label-text">{{rol.name}}</span>
                       </label>
-
+                  </div>
 
                   </div>
 
@@ -129,8 +129,8 @@
 	                <td>{{item.direccion}}</td>
 	                <td>{{$fecha(item.created_at)}}</td>
 	                <td>
-	                  <button class="btn btn-primary btn-sm"  @click="editarDepartamento(item)" type="button" v-if="$can('ver pais')"><i class="fas fa-edit"></i></button>
-	                  <button class="btn btn-danger btn-sm" @click="eliminarDepartamento(item)" type="button" v-if="$can('ver pais')"><i class="fas fa-trash"></i></button>
+	                  <button class="btn btn-primary btn-sm"  @click="editarUsuarios(item)" type="button" v-if="$can('editar usuario')"><i class="fas fa-edit"></i></button>
+	                  <button class="btn btn-danger btn-sm" @click="eliminarUsuario(item)" type="button" v-if="$can('eliminar usuario')"><i class="fas fa-trash"></i></button>
 	                </td>
                   <td ><p v-for="rol in item.roles">{{rol.name}}</p></td>
 	              </tr>
@@ -156,8 +156,13 @@
         tiposDocumentos: [],
         municipios: [],
         roles:[],
+<<<<<<< HEAD
         crearusuarios:{idtipoDocumento:'',idMunicipio:'',nombre:'',apellido:'',
         documento:'',direccion:'',email:'',copiasDocumento:'',contrasena:''},
+=======
+        crearusuarios:{idtipoDocumento:'1',idMunicipio:'1',nombre:'',apellido:'',
+        documento:'',direccion:'',email:'',telefono:'',copiasDocumento:'',contrasena:''},
+>>>>>>> 42e1b5ee9ba64d4b67daca6e20da430c0d68ad4d
         arrayRoles:[],
         tituloModal:'',
         btnCrear:true,
@@ -207,6 +212,7 @@
         formData.append('documento',this.crearusuarios.documento)
         formData.append('direccion',this.crearusuarios.direccion)
         formData.append('email',this.crearusuarios.email)
+        formData.append('telefono',this.crearusuarios.telefono)
         formData.append('copiaDocumento',this.crearusuarios.copiasDocumento)
         formData.append('contrasena',this.crearusuarios.contrasena)
         formData.append('rol',this.arrayRoles)
@@ -234,12 +240,13 @@
         this.crearusuarios.documento=''
         this.crearusuarios.direccion=''
         this.crearusuarios.email=''
+        this.crearusuarios.telefono=''
         this.crearusuarios.copiasDocumento=''
         this.crearusuarios.contrasena=''
         this.arrayRoles=[]
       },
 
-      editarDepartamento(item){
+      editarUsuario(item){
         this.tituloModal=' Editar Usuarios'
         this.btnEditar=true
         this.btnCrear=false
@@ -253,6 +260,7 @@
         this.crearusuarios.documento = item.numero_documento
         this.crearusuarios.direccion = item.direccion
         this.crearusuarios.email = item.email
+        this.crearusuarios.telefono = item.telefono
         this.copia = item.copia_documento
         this.imagenUsuario = item.foto
         this.arrayRoles = []
@@ -272,6 +280,7 @@
         formData.append('documento',this.crearusuarios.documento)
         formData.append('direccion',this.crearusuarios.direccion)
         formData.append('email',this.crearusuarios.email)
+        formData.append('telefono',this.crearusuarios.telefono)
         formData.append('copiaDocumento',this.crearusuarios.copiasDocumento)
         formData.append('contrasena',this.crearusuarios.contrasena)
         formData.append('rol',this.arrayRoles)
@@ -292,8 +301,7 @@
         });}
       },
 
-      eliminarDepartamento(item){
-
+      eliminarUsuario(item){
 	      swal({
           title: "¿Está seguro de eliminar a "+item.name+"?",
           text: "Si preciona OK se eliminará permanentemente.",

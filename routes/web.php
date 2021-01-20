@@ -32,7 +32,16 @@ Route::middleware(['auth'])->group(function(){
 		Route::resource('tipoTributarios', 'Productos\TipoTributarioController')->except(['show', 'edit',])->middleware('permission:ver tipo-tributario');
 	// Rutas para Compras
 		Route::resource('tipoCompras', 'Compras\TipoCompraController')->except(['show', 'edit',])->middleware('permission:ver tipo-compra');
+<<<<<<< HEAD
 		Route::resource('compras', 'Compras\CompraController')->except(['edit', 'update'])->middleware('permission:ver compra');
 		Route::resource('consultarCompras', 'Compras\ConsultarCompraController')->except(['show', 'edit',])->middleware('permission:ver consultar-compra');
 		Route::resource('abonoCompras', 'Compras\AbonoCompraController')->except(['show', 'edit',])->middleware('permission:ver abono-compra');
+=======
+		Route::resource('compras', 'Compras\CompraController')->except(['show', 'edit',])->middleware('permission:ver compra');
+		Route::resource('consultarCompras', 'Compras\ConsultarCompraController')->except(['show'])->middleware('permission:ver consultar-compra');
+    Route::resource('abonoCompras', 'Compras\AbonoCompraController')->except(['show', 'edit',])->middleware('permission:ver abono-compra');
+    Route::post('/buscarCompras', 'Compras\ConsultarCompraController@buscarCompras')->name('buscarCompras');
+    Route::put('/anularCompras', 'Compras\ConsultarCompraController@anularCompras')->name('anularCompras');
+
+>>>>>>> 42e1b5ee9ba64d4b67daca6e20da430c0d68ad4d
 });
